@@ -820,8 +820,7 @@ function goTo(id) {
   const cur = document.getElementById(currentScreen);
   const nxt = document.getElementById(id);
   if (!nxt) return;
-  cur.classList.add('exit');
-  setTimeout(() => cur.classList.remove('active','exit'), 220);
+  cur.classList.remove('active');
   nxt.classList.add('active');
   currentScreen = id;
   onEnter(id);
