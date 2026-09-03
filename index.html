@@ -7,265 +7,255 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#F7F5F2;--bg2:#EDEAE5;--surface:#FFFFFF;--surface2:#F2EFE9;
+  --bg:#F7F5F2;--bg2:#EDEAE5;--surface:#FFFFFF;
   --ink:#1A1714;--ink2:#6B6560;--ink3:#A09A94;
   --primary:#2D6A4F;--primary-lt:#52B788;--primary-bg:#D8F3DC;
   --accent:#F4A261;--accent-bg:#FFF0E0;
   --danger:#E63946;--danger-bg:#FDECEA;
-  --radius-sm:10px;--radius:16px;--radius-lg:24px;--radius-xl:32px;
+  --info:#3B82F6;--info-bg:#EFF6FF;
+  --radius-sm:10px;--radius:16px;--radius-xl:32px;
   --shadow-sm:0 1px 4px rgba(0,0,0,.06);--shadow:0 4px 20px rgba(0,0,0,.08);--shadow-lg:0 8px 40px rgba(0,0,0,.12);
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
-  --transition:.22s cubic-bezier(.4,0,.2,1);
+  --t:.22s cubic-bezier(.4,0,.2,1);
 }
 html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
 #app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;position:relative;background:var(--bg);overflow:hidden}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(30px);transition:opacity var(--transition),transform var(--transition);overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(30px);transition:opacity var(--t),transform var(--t);overflow:hidden}
 .screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .screen.exit{opacity:0;transform:translateX(-30px)}
 .scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px}
 .scroll-area::-webkit-scrollbar{display:none}
-.topbar{display:flex;align-items:center;gap:12px;padding:16px 20px 12px;background:var(--surface);border-bottom:1px solid var(--bg2);flex-shrink:0;position:relative;z-index:10}
-.topbar-title{flex:1;font-size:17px;font-weight:700;color:var(--ink)}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;gap:12px;padding:16px 20px 12px;background:var(--surface);border-bottom:1px solid var(--bg2);flex-shrink:0;z-index:10}
+.topbar-title{flex:1;font-size:17px;font-weight:700}
 .topbar-sub{font-size:12px;color:var(--ink3);font-weight:400;display:block;margin-top:1px}
-.btn-icon{width:38px;height:38px;border-radius:50%;border:none;background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2);font-size:18px;transition:background var(--transition);flex-shrink:0}
-.btn-icon:hover{background:var(--bg)}
+.btn-icon{width:38px;height:38px;border-radius:50%;border:none;background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2);font-size:18px;transition:background var(--t);flex-shrink:0}
+/* BOTTOM NAV */
 .bottom-nav{position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--bg2);display:flex;align-items:center;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;border:none;background:none;color:var(--ink3);font-size:10px;font-weight:500;transition:color var(--transition)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;border:none;background:none;color:var(--ink3);font-size:10px;font-weight:500;transition:color var(--t)}
 .nav-item.active{color:var(--primary)}
 .nav-icon{font-size:22px;line-height:1}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:var(--font);font-weight:600;border-radius:var(--radius);transition:all var(--transition)}
-.btn-primary{background:var(--primary);color:#fff;padding:16px 28px;font-size:16px;box-shadow:0 4px 16px rgba(45,106,79,.3)}
-.btn-primary:hover{background:#245a42;transform:translateY(-1px)}
-.btn-secondary{background:var(--surface);color:var(--ink);padding:14px 24px;font-size:15px;border:1.5px solid var(--bg2)}
-.btn-ghost{background:transparent;color:var(--primary);padding:12px 20px;font-size:14px}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:var(--font);font-weight:600;border-radius:var(--radius);transition:all var(--t)}
+.btn-primary{background:var(--primary);color:#fff;padding:15px 24px;font-size:15px;box-shadow:0 4px 16px rgba(45,106,79,.25)}
+.btn-primary:active{transform:scale(.98)}
+.btn-secondary{background:var(--surface);color:var(--ink);padding:13px 20px;font-size:14px;border:1.5px solid var(--bg2)}
+.btn-ghost{background:transparent;color:var(--primary);padding:10px 16px;font-size:14px}
 .btn-full{width:100%}
-.btn-sm{padding:10px 18px;font-size:13px;border-radius:var(--radius-sm)}
-.card{background:var(--surface);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm)}
-.card+.card{margin-top:12px}
-.form-group{margin-bottom:20px}
-.form-label{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.form-input{width:100%;padding:14px 16px;border:1.5px solid var(--bg2);border-radius:var(--radius-sm);font-family:var(--font);font-size:16px;color:var(--ink);background:var(--surface);transition:border-color var(--transition);outline:none}
+.btn-sm{padding:9px 16px;font-size:13px;border-radius:var(--radius-sm)}
+.btn-danger{background:var(--danger-bg);color:var(--danger);padding:9px 16px;font-size:13px;border-radius:var(--radius-sm)}
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)}
+/* FORMS */
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+.form-input{width:100%;padding:13px 15px;border:1.5px solid var(--bg2);border-radius:var(--radius-sm);font-family:var(--font);font-size:15px;color:var(--ink);background:var(--surface);transition:border-color var(--t);outline:none}
 .form-input:focus{border-color:var(--primary)}
 .form-input::placeholder{color:var(--ink3)}
-.form-row{display:flex;gap:12px}
+.form-row{display:flex;gap:10px}
 .form-row .form-group{flex:1}
+.form-select{width:100%;padding:13px 15px;border:1.5px solid var(--bg2);border-radius:var(--radius-sm);font-family:var(--font);font-size:15px;color:var(--ink);background:var(--surface);outline:none;cursor:pointer}
+/* STEPPER */
 .stepper{display:flex;align-items:center;border:1.5px solid var(--bg2);border-radius:var(--radius-sm);overflow:hidden;background:var(--surface)}
-.stepper-btn{width:44px;height:48px;border:none;background:var(--bg2);cursor:pointer;font-size:20px;color:var(--ink2);display:flex;align-items:center;justify-content:center;transition:background var(--transition)}
-.stepper-btn:hover{background:var(--bg)}
-.stepper-val{flex:1;text-align:center;font-size:18px;font-weight:700;color:var(--ink)}
+.stepper-btn{width:44px;height:48px;border:none;background:var(--bg2);cursor:pointer;font-size:20px;color:var(--ink2);display:flex;align-items:center;justify-content:center}
+.stepper-val{flex:1;text-align:center;font-size:18px;font-weight:700}
+/* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:8px 16px;border-radius:100px;border:1.5px solid var(--bg2);background:var(--surface);color:var(--ink2);font-size:13px;font-weight:500;cursor:pointer;transition:all var(--transition)}
+.chip{padding:8px 14px;border-radius:100px;border:1.5px solid var(--bg2);background:var(--surface);color:var(--ink2);font-size:13px;font-weight:500;cursor:pointer;transition:all var(--t)}
 .chip.selected{background:var(--primary-bg);color:var(--primary);border-color:var(--primary-lt)}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bg2)}
-.toggle-row:last-child{border-bottom:none}
-.toggle-label{font-size:15px;color:var(--ink)}
-.toggle-sub{font-size:12px;color:var(--ink3);margin-top:2px}
-.toggle{width:48px;height:28px;border-radius:100px;background:var(--bg2);position:relative;cursor:pointer;transition:background var(--transition);border:none;flex-shrink:0}
-.toggle.on{background:var(--primary)}
-.toggle::after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform var(--transition);box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.toggle.on::after{transform:translateX(20px)}
+/* PROGRESS */
 .progress-bar{height:6px;border-radius:3px;background:var(--bg2);overflow:hidden}
 .progress-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .4s ease}
-.divider{height:1px;background:var(--bg2);margin:16px 0}
-.section-header{padding:24px 20px 12px;display:flex;align-items:center;justify-content:space-between}
-.section-title{font-size:20px;font-weight:800;color:var(--ink)}
-.section-sub{font-size:13px;color:var(--ink3);margin-top:2px}
+/* SECTION */
+.section-header{padding:20px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:18px;font-weight:800}
+.section-sub{font-size:12px;color:var(--ink3);margin-top:2px}
 .section-action{font-size:13px;color:var(--primary);font-weight:600;cursor:pointer;border:none;background:none}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600}
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:600}
 .badge-green{background:var(--primary-bg);color:var(--primary)}
 .badge-orange{background:var(--accent-bg);color:var(--accent)}
-.badge-red{background:var(--danger-bg);color:var(--danger)}
-.badge-gray{background:var(--bg2);color:var(--ink2)}
-.empty-state{text-align:center;padding:60px 32px}
-.empty-icon{font-size:56px;margin-bottom:16px}
-.empty-title{font-size:20px;font-weight:700;margin-bottom:8px}
-.empty-sub{font-size:14px;color:var(--ink3);line-height:1.6}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity var(--transition)}
+.badge-blue{background:var(--info-bg);color:var(--info)}
+/* EMPTY */
+.empty-state{text-align:center;padding:50px 28px}
+.empty-icon{font-size:52px;margin-bottom:14px}
+.empty-title{font-size:19px;font-weight:700;margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--ink3);line-height:1.6}
+/* OVERLAY & SHEETS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity var(--t)}
 .overlay.open{opacity:1;pointer-events:all}
-.bottom-sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--surface);border-radius:var(--radius-xl) var(--radius-xl) 0 0;z-index:201;padding:0 0 max(24px,env(safe-area-inset-bottom));transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:90dvh;overflow-y:auto}
+.bottom-sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--surface);border-radius:var(--radius-xl) var(--radius-xl) 0 0;z-index:201;padding:0 0 max(24px,env(safe-area-inset-bottom));transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92dvh;overflow-y:auto}
 .bottom-sheet.open{transform:translateX(-50%) translateY(0)}
-.sheet-handle{width:40px;height:4px;border-radius:2px;background:var(--bg2);margin:12px auto 20px}
-.sheet-title{font-size:18px;font-weight:800;padding:0 20px 16px;color:var(--ink)}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:var(--radius);font-size:14px;font-weight:500;z-index:300;opacity:0;transition:all .3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)}
+.sheet-handle{width:40px;height:4px;border-radius:2px;background:var(--bg2);margin:12px auto 18px}
+.sheet-title{font-size:18px;font-weight:800;padding:0 20px 14px}
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;z-index:300;opacity:0;transition:all .3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* ONBOARDING */
 #screen-onboarding{background:var(--surface)}
-.onboarding-hero{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 60%,#52B788 100%);padding:60px 32px 48px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.onboarding-hero::before{content:'🛒';position:absolute;font-size:200px;opacity:.06;top:-20px;right:-30px;transform:rotate(15deg)}
-.onboarding-logo{font-size:56px;margin-bottom:16px}
-.onboarding-title{font-size:34px;font-weight:900;line-height:1.1;margin-bottom:12px}
-.onboarding-tagline{font-size:16px;opacity:.85;line-height:1.5}
-.onboarding-steps{padding:32px 24px}
-.onboarding-step{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px}
-.step-icon{width:44px;height:44px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.step-text h3{font-size:15px;font-weight:700;margin-bottom:4px}
-.step-text p{font-size:13px;color:var(--ink3);line-height:1.5}
-.onboarding-cta{padding:0 24px 40px}
+.onboarding-hero{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 60%,#52B788 100%);padding:56px 28px 44px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.onboarding-hero::before{content:'🛒';position:absolute;font-size:180px;opacity:.06;top:-10px;right:-20px;transform:rotate(15deg)}
+.onboarding-logo{font-size:52px;margin-bottom:14px}
+.onboarding-title{font-size:32px;font-weight:900;line-height:1.1;margin-bottom:10px}
+.onboarding-tagline{font-size:15px;opacity:.85;line-height:1.5}
+.onboarding-steps{padding:28px 22px}
+.onboarding-step{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.step-icon{width:42px;height:42px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.step-text h3{font-size:14px;font-weight:700;margin-bottom:3px}
+.step-text p{font-size:12px;color:var(--ink3);line-height:1.5}
 /* SETUP */
-.setup-progress{padding:16px 20px 0;background:var(--surface)}
-.setup-step-label{font-size:12px;color:var(--ink3);margin-bottom:8px;font-weight:500}
-.setup-content{flex:1;overflow-y:auto;padding:24px 20px}
-.setup-title{font-size:26px;font-weight:900;margin-bottom:6px}
-.setup-sub{font-size:14px;color:var(--ink3);margin-bottom:28px;line-height:1.5}
-.setup-footer{padding:16px 20px max(16px,env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--bg2);flex-shrink:0}
+.setup-progress{padding:14px 20px 0;background:var(--surface)}
+.setup-step-label{font-size:12px;color:var(--ink3);margin-bottom:7px;font-weight:500}
+.setup-content{flex:1;overflow-y:auto;padding:20px}
+.setup-title{font-size:24px;font-weight:900;margin-bottom:5px}
+.setup-sub{font-size:13px;color:var(--ink3);margin-bottom:24px;line-height:1.5}
+.setup-footer{padding:14px 20px max(14px,env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--bg2);flex-shrink:0}
 /* HOME */
-.home-header{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%);padding:20px 20px 28px;color:#fff;position:relative;overflow:hidden}
-.home-header::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);bottom:-60px;right:-40px}
-.home-greeting{font-size:13px;opacity:.75;margin-bottom:4px}
-.home-title{font-size:24px;font-weight:900;margin-bottom:20px}
-.home-week-card{background:rgba(255,255,255,.12);border-radius:var(--radius);padding:16px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
-.home-week-meta{display:flex;gap:16px;margin-bottom:16px}
+.home-header{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%);padding:18px 20px 26px;color:#fff;position:relative;overflow:hidden}
+.home-header::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05);bottom:-50px;right:-30px}
+.home-greeting{font-size:13px;opacity:.75;margin-bottom:3px}
+.home-title{font-size:22px;font-weight:900;margin-bottom:18px}
+.home-week-card{background:rgba(255,255,255,.12);border-radius:var(--radius);padding:14px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.home-week-meta{display:flex;gap:12px;margin-bottom:14px}
 .home-meta-item{text-align:center;flex:1}
-.home-meta-val{font-size:22px;font-weight:900}
-.home-meta-label{font-size:11px;opacity:.7;margin-top:2px}
+.home-meta-val{font-size:20px;font-weight:900}
+.home-meta-label{font-size:10px;opacity:.7;margin-top:2px}
 .home-meta-sep{width:1px;background:rgba(255,255,255,.2)}
-.home-cta-btn{width:100%;padding:14px;background:#fff;color:var(--primary);border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--transition)}
-.home-cta-btn:hover{background:var(--primary-bg)}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px}
-.quick-card{background:var(--surface);border-radius:var(--radius);padding:18px 16px;cursor:pointer;box-shadow:var(--shadow-sm);transition:all var(--transition);border:1.5px solid transparent}
-.quick-card:hover{border-color:var(--primary-lt);transform:translateY(-2px)}
-.quick-card-icon{font-size:28px;margin-bottom:10px}
-.quick-card-title{font-size:14px;font-weight:700;margin-bottom:4px}
-.quick-card-sub{font-size:12px;color:var(--ink3);line-height:1.4}
-.meal-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bg2)}
+.home-cta-btn{width:100%;padding:13px;background:#fff;color:var(--primary);border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+/* QUICK ACTIONS */
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
+.quick-card{background:var(--surface);border-radius:var(--radius);padding:16px 14px;cursor:pointer;box-shadow:var(--shadow-sm);transition:all var(--t);border:1.5px solid transparent}
+.quick-card:active{transform:scale(.97)}
+.quick-card-icon{font-size:26px;margin-bottom:8px}
+.quick-card-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.quick-card-sub{font-size:11px;color:var(--ink3);line-height:1.4}
+/* MEAL ROWS */
+.meal-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bg2)}
 .meal-row:last-child{border-bottom:none}
-.meal-day{width:36px;height:36px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;text-transform:uppercase}
+.meal-day{width:34px;height:34px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;text-transform:uppercase}
 .meal-info{flex:1}
-.meal-name{font-size:14px;font-weight:600}
-.meal-meta{font-size:12px;color:var(--ink3);margin-top:2px}
-.meal-action{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink3);transition:all var(--transition)}
-.meal-action:hover{background:var(--primary-bg);color:var(--primary)}
+.meal-name{font-size:13px;font-weight:600}
+.meal-meta{font-size:11px;color:var(--ink3);margin-top:1px}
+.meal-action{width:28px;height:28px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink3)}
 /* PLAN */
-.budget-bar{background:var(--surface);padding:16px 20px;border-bottom:1px solid var(--bg2);display:flex;align-items:center;gap:12px;flex-shrink:0}
-.budget-info{flex:1}
-.budget-amount{font-size:22px;font-weight:900;color:var(--primary)}
-.budget-label{font-size:12px;color:var(--ink3)}
-.budget-progress{flex:1}
-.day-section{padding:0 20px;margin-bottom:8px}
-.day-header{display:flex;align-items:center;gap:10px;padding:16px 0 10px}
-.day-dot{width:10px;height:10px;border-radius:50%;background:var(--primary)}
-.day-name{font-size:16px;font-weight:800}
-.day-date{font-size:12px;color:var(--ink3);margin-left:auto}
-.meal-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all var(--transition)}
-.meal-card:hover{box-shadow:var(--shadow)}
-.meal-type-badge{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700;background:var(--primary-bg);color:var(--primary);flex-shrink:0}
+.budget-bar{background:var(--surface);padding:14px 20px;border-bottom:1px solid var(--bg2);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.budget-amount{font-size:20px;font-weight:900;color:var(--primary)}
+.budget-label{font-size:11px;color:var(--ink3)}
+.day-section{padding:0 20px;margin-bottom:4px}
+.day-header{display:flex;align-items:center;gap:8px;padding:14px 0 8px}
+.day-dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.day-name{font-size:15px;font-weight:800}
+.day-date{font-size:11px;color:var(--ink3);margin-left:auto}
+.meal-card{background:var(--surface);border-radius:var(--radius);padding:13px 15px;margin-bottom:7px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-sm);cursor:pointer}
+.meal-type-badge{padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;background:var(--primary-bg);color:var(--primary);flex-shrink:0}
 .meal-type-badge.dinner{background:var(--accent-bg);color:var(--accent)}
-.meal-card-name{flex:1;font-size:14px;font-weight:600}
-.meal-card-time{font-size:12px;color:var(--ink3)}
-.meal-card-swap{width:32px;height:32px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink3);transition:all var(--transition)}
-.meal-card-swap:hover{background:var(--primary-bg);color:var(--primary)}
+.meal-card-name{flex:1;font-size:13px;font-weight:600}
+.meal-card-time{font-size:11px;color:var(--ink3)}
+.meal-card-swap{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink3)}
 /* LIST */
-.list-category{padding:0 20px;margin-bottom:4px}
-.list-cat-header{display:flex;align-items:center;gap:8px;padding:16px 0 8px}
-.list-cat-icon{font-size:18px}
-.list-cat-name{font-size:14px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px}
-.list-cat-count{font-size:12px;color:var(--ink3);margin-left:auto}
-.list-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--bg2);transition:opacity var(--transition)}
+.list-add-bar{padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--bg2);flex-shrink:0}
+.list-category{padding:0 20px;margin-bottom:2px}
+.list-cat-header{display:flex;align-items:center;gap:7px;padding:14px 0 7px}
+.list-cat-icon{font-size:17px}
+.list-cat-name{font-size:13px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px}
+.list-cat-count{font-size:11px;color:var(--ink3);margin-left:auto}
+.list-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--bg2);transition:opacity var(--t)}
 .list-item:last-child{border-bottom:none}
-.list-item.checked{opacity:.45}
+.list-item.checked{opacity:.4}
 .list-item.checked .list-item-name{text-decoration:line-through}
-.list-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg2);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition);font-size:12px;color:transparent}
+.list-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg2);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--t);font-size:11px;color:transparent}
 .list-item.checked .list-check{background:var(--primary);border-color:var(--primary);color:#fff}
 .list-item-info{flex:1}
-.list-item-name{font-size:15px;font-weight:500}
-.list-item-qty{font-size:12px;color:var(--ink3);margin-top:2px}
-.list-item-recipe{font-size:11px;color:var(--primary);margin-top:2px}
+.list-item-name{font-size:14px;font-weight:500}
+.list-item-qty{font-size:11px;color:var(--ink3);margin-top:1px}
+.list-del{width:26px;height:26px;border-radius:50%;background:var(--danger-bg);border:none;cursor:pointer;color:var(--danger);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* STOCK */
-.stock-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--bg2)}
+.stock-item{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--bg2)}
 .stock-item:last-child{border-bottom:none}
-.stock-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stock-icon{width:38px;height:38px;border-radius:var(--radius-sm);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
 .stock-info{flex:1}
-.stock-name{font-size:15px;font-weight:600}
-.stock-qty{font-size:12px;color:var(--ink3);margin-top:2px}
-.stock-cat{font-size:11px;color:var(--primary);margin-top:2px}
-.stock-del{width:30px;height:30px;border-radius:50%;background:var(--danger-bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--danger)}
+.stock-name{font-size:14px;font-weight:600}
+.stock-qty{font-size:11px;color:var(--ink3);margin-top:1px}
+.stock-del{width:28px;height:28px;border-radius:50%;background:var(--danger-bg);border:none;cursor:pointer;color:var(--danger);font-size:13px;display:flex;align-items:center;justify-content:center}
 /* PROFILE */
-.profile-header{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%);padding:32px 20px 28px;color:#fff;text-align:center}
-.profile-avatar{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px}
-.profile-name{font-size:20px;font-weight:800}
-.profile-sub{font-size:13px;opacity:.75;margin-top:4px}
-.profile-stats{display:flex;background:var(--surface);margin:0 20px;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:-20px;overflow:hidden}
-.profile-stat{flex:1;text-align:center;padding:16px 8px;border-right:1px solid var(--bg2)}
+.profile-header{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%);padding:28px 20px 24px;color:#fff;text-align:center}
+.profile-avatar{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:30px}
+.profile-name{font-size:19px;font-weight:800}
+.profile-sub{font-size:12px;opacity:.75;margin-top:3px}
+.profile-stats{display:flex;background:var(--surface);margin:0 20px;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:-18px;overflow:hidden}
+.profile-stat{flex:1;text-align:center;padding:14px 6px;border-right:1px solid var(--bg2)}
 .profile-stat:last-child{border-right:none}
-.profile-stat-val{font-size:20px;font-weight:900;color:var(--primary)}
-.profile-stat-label{font-size:11px;color:var(--ink3);margin-top:2px}
-.settings-group{padding:0 20px;margin-bottom:8px}
-.settings-item{display:flex;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--bg2);cursor:pointer}
+.profile-stat-val{font-size:18px;font-weight:900;color:var(--primary)}
+.profile-stat-label{font-size:10px;color:var(--ink3);margin-top:2px}
+.settings-group{padding:0 20px;margin-bottom:6px}
+.settings-item{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--bg2);cursor:pointer}
 .settings-item:last-child{border-bottom:none}
-.settings-icon{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.settings-label{flex:1;font-size:15px;font-weight:500}
-.settings-arrow{color:var(--ink3);font-size:14px}
-.settings-val{font-size:13px;color:var(--ink3)}
-/* GENERATE */
-.generate-hero{background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 100%);padding:40px 24px 32px;color:#fff;text-align:center}
-.generate-icon{font-size:56px;margin-bottom:16px}
-.generate-title{font-size:26px;font-weight:900;margin-bottom:8px}
-.generate-sub{font-size:14px;opacity:.8;line-height:1.5}
-.budget-input-big{display:flex;align-items:center;border:2px solid var(--bg2);border-radius:var(--radius);overflow:hidden;background:var(--surface);margin-bottom:16px}
-.budget-currency{padding:0 16px;font-size:24px;font-weight:900;color:var(--primary);background:var(--primary-bg);height:64px;display:flex;align-items:center}
-.budget-field{flex:1;border:none;outline:none;font-size:32px;font-weight:900;color:var(--ink);padding:0 16px;font-family:var(--font);background:transparent}
-.objectives-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.obj-card{padding:14px;border-radius:var(--radius-sm);border:1.5px solid var(--bg2);background:var(--surface);cursor:pointer;transition:all var(--transition);text-align:center}
-.obj-card.selected{border-color:var(--primary);background:var(--primary-bg)}
-.obj-icon{font-size:24px;margin-bottom:6px}
-.obj-label{font-size:12px;font-weight:600;color:var(--ink2)}
-.obj-card.selected .obj-label{color:var(--primary)}
-/* LOADING */
-.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--surface);padding:40px}
-.loading-icon{font-size:64px;margin-bottom:24px;animation:bounce 1s infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.loading-title{font-size:22px;font-weight:800;margin-bottom:8px;text-align:center}
-.loading-sub{font-size:14px;color:var(--ink3);text-align:center;line-height:1.6}
-.loading-steps{margin-top:32px;width:100%}
-.loading-step{display:flex;align-items:center;gap:12px;padding:10px 0;opacity:.3;transition:opacity .4s}
-.loading-step.done{opacity:1}
-.loading-step-icon{width:32px;height:32px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px}
-.loading-step-text{font-size:14px;font-weight:500}
+.settings-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.settings-label{flex:1;font-size:14px;font-weight:500}
+.settings-arrow{color:var(--ink3);font-size:13px}
+/* SANTÉ — IMC & Métabolisme */
+.health-card{background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.health-card-title{font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.health-result{text-align:center;padding:16px 0}
+.health-big{font-size:42px;font-weight:900;color:var(--primary)}
+.health-unit{font-size:14px;color:var(--ink3);margin-top:2px}
+.health-label{font-size:13px;font-weight:700;margin-top:8px}
+.health-sub{font-size:12px;color:var(--ink3);margin-top:4px;line-height:1.5}
+.imc-bar{height:10px;border-radius:5px;background:linear-gradient(to right,#3B82F6 0%,#22C55E 25%,#F59E0B 50%,#EF4444 75%,#7C3AED 100%);margin:12px 0;position:relative}
+.imc-cursor{position:absolute;top:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--ink);transform:translateX(-50%);transition:left .5s ease}
+.imc-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+.macro-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.macro-item{background:var(--bg2);border-radius:var(--radius-sm);padding:10px;text-align:center}
+.macro-val{font-size:16px;font-weight:800;color:var(--primary)}
+.macro-label{font-size:10px;color:var(--ink3);margin-top:2px}
+/* RECETTES SUGGÉRÉES */
+.recipe-card{background:var(--surface);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all var(--t)}
+.recipe-card:active{transform:scale(.98)}
+.recipe-emoji{font-size:28px;flex-shrink:0}
+.recipe-info{flex:1}
+.recipe-name{font-size:14px;font-weight:700}
+.recipe-meta{font-size:11px;color:var(--ink3);margin-top:2px}
+.recipe-add{width:30px;height:30px;border-radius:50%;background:var(--primary-bg);border:none;cursor:pointer;color:var(--primary);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* CHAT */
-.chat-area{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
-.chat-bubble{max-width:85%;padding:12px 16px;border-radius:var(--radius);font-size:14px;line-height:1.5}
+.chat-area{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.chat-bubble{max-width:85%;padding:11px 15px;border-radius:var(--radius);font-size:13px;line-height:1.5}
 .chat-bubble.bot{background:var(--surface);color:var(--ink);border-radius:4px var(--radius) var(--radius) var(--radius);box-shadow:var(--shadow-sm);align-self:flex-start}
 .chat-bubble.user{background:var(--primary);color:#fff;border-radius:var(--radius) 4px var(--radius) var(--radius);align-self:flex-end}
-.chat-input-row{display:flex;gap:10px;padding:12px 20px;background:var(--surface);border-top:1px solid var(--bg2);flex-shrink:0}
-.chat-input{flex:1;padding:12px 16px;border:1.5px solid var(--bg2);border-radius:var(--radius);font-family:var(--font);font-size:14px;outline:none;transition:border-color var(--transition)}
+.chat-input-row{display:flex;gap:8px;padding:10px 16px;background:var(--surface);border-top:1px solid var(--bg2);flex-shrink:0}
+.chat-input{flex:1;padding:11px 14px;border:1.5px solid var(--bg2);border-radius:var(--radius);font-family:var(--font);font-size:13px;outline:none}
 .chat-input:focus{border-color:var(--primary)}
-.chat-send{width:44px;height:44px;border-radius:50%;background:var(--primary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;transition:all var(--transition)}
-.chat-send:hover{background:#245a42}
-.chat-suggestions{display:flex;gap:8px;overflow-x:auto;padding:8px 20px 0;flex-shrink:0}
+.chat-send{width:42px;height:42px;border-radius:50%;background:var(--primary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff}
+.chat-suggestions{display:flex;gap:7px;overflow-x:auto;padding:8px 16px 0;flex-shrink:0}
 .chat-suggestions::-webkit-scrollbar{display:none}
-.chat-sug{padding:8px 14px;border-radius:100px;background:var(--primary-bg);color:var(--primary);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;flex-shrink:0;transition:all var(--transition)}
-.chat-sug:hover{background:var(--primary);color:#fff}
-.allergy-disclaimer{background:var(--accent-bg);border-radius:var(--radius-sm);padding:12px 14px;margin:12px 0;display:flex;gap:10px;align-items:flex-start}
-.allergy-disclaimer-icon{font-size:18px;flex-shrink:0}
-.allergy-disclaimer-text{font-size:12px;color:var(--ink2);line-height:1.5}
-/* SWAP OPTIONS */
-.swap-option{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--bg2);cursor:pointer;transition:background var(--transition)}
-.swap-option:last-child{border-bottom:none}
-.swap-option:hover{background:var(--bg2);margin:0 -20px;padding:14px 20px}
-.swap-option-name{flex:1;font-size:15px;font-weight:600}
-.swap-option-time{font-size:12px;color:var(--ink3)}
-.swap-option-badge{font-size:11px;padding:3px 8px;border-radius:100px;background:var(--primary-bg);color:var(--primary);font-weight:600}
+.chat-sug{padding:7px 13px;border-radius:100px;background:var(--primary-bg);color:var(--primary);font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;flex-shrink:0}
+/* ALLERGY */
+.allergy-disclaimer{background:var(--accent-bg);border-radius:var(--radius-sm);padding:11px 13px;margin:10px 0;display:flex;gap:9px;align-items:flex-start}
+.allergy-disclaimer-icon{font-size:17px;flex-shrink:0}
+.allergy-disclaimer-text{font-size:11px;color:var(--ink2);line-height:1.5}
+/* LOADING */
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--surface);padding:40px}
+.loading-icon{font-size:60px;margin-bottom:20px;animation:bounce 1s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.loading-title{font-size:20px;font-weight:800;margin-bottom:7px;text-align:center}
+.loading-sub{font-size:13px;color:var(--ink3);text-align:center;line-height:1.6}
+.loading-steps{margin-top:28px;width:100%}
+.loading-step{display:flex;align-items:center;gap:10px;padding:9px 0;opacity:.3;transition:opacity .4s}
+.loading-step.done{opacity:1}
+.loading-step-icon{width:30px;height:30px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px}
+.loading-step-text{font-size:13px;font-weight:500}
 /* ANIMATIONS */
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .stagger>*{opacity:0;animation:fadeIn .3s ease forwards}
-.stagger>*:nth-child(1){animation-delay:.05s}
-.stagger>*:nth-child(2){animation-delay:.1s}
-.stagger>*:nth-child(3){animation-delay:.15s}
-.stagger>*:nth-child(4){animation-delay:.2s}
-.stagger>*:nth-child(5){animation-delay:.25s}
-.stagger>*:nth-child(6){animation-delay:.3s}
-.stagger>*:nth-child(7){animation-delay:.35s}
-@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(244,162,97,.5)}50%{box-shadow:0 4px 30px rgba(244,162,97,.8)}}
-.magic-fab{position:fixed;bottom:80px;right:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#E76F51);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;box-shadow:0 4px 20px rgba(244,162,97,.5);z-index:50;transition:all var(--transition);animation:pulse 2s infinite}
-.magic-fab:hover{transform:scale(1.1)}
+.stagger>*:nth-child(1){animation-delay:.05s}.stagger>*:nth-child(2){animation-delay:.1s}
+.stagger>*:nth-child(3){animation-delay:.15s}.stagger>*:nth-child(4){animation-delay:.2s}
+.stagger>*:nth-child(5){animation-delay:.25s}.stagger>*:nth-child(6){animation-delay:.3s}
 @media(min-width:500px){body{background:#E8E4DF;display:flex;align-items:center;justify-content:center;min-height:100vh}#app{border-radius:40px;box-shadow:0 30px 80px rgba(0,0,0,.2);height:90vh;max-height:900px}}
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- SCREEN: ONBOARDING -->
+<!-- ===== ONBOARDING ===== -->
 <div class="screen active" id="screen-onboarding">
   <div class="scroll-area">
     <div class="onboarding-hero">
@@ -274,31 +264,19 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
       <p class="onboarding-tagline">Donnez-moi votre budget et vos contraintes.<br>Je m'occupe du reste.</p>
     </div>
     <div class="onboarding-steps stagger">
-      <div class="onboarding-step">
-        <div class="step-icon">💰</div>
-        <div class="step-text"><h3>Indiquez votre budget</h3><p>Dites-nous combien vous souhaitez dépenser cette semaine.</p></div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-icon">🍽️</div>
-        <div class="step-text"><h3>Recevez votre plan</h3><p>L'application génère automatiquement vos repas et votre liste de courses optimisée.</p></div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-icon">✏️</div>
-        <div class="step-text"><h3>Ajustez en un mot</h3><p>Pas de poisson ? Remplacez un repas. Budget réduit ? On réoptimise tout.</p></div>
-      </div>
-      <div class="onboarding-step">
-        <div class="step-icon">🧠</div>
-        <div class="step-text"><h3>Zéro charge mentale</h3><p>Plus jamais « qu'est-ce qu'on mange ? ». L'application pense pour vous.</p></div>
-      </div>
+      <div class="onboarding-step"><div class="step-icon">💰</div><div class="step-text"><h3>Indiquez votre budget</h3><p>Dites-nous combien vous souhaitez dépenser cette semaine.</p></div></div>
+      <div class="onboarding-step"><div class="step-icon">🍽️</div><div class="step-text"><h3>Planifiez vos repas</h3><p>Ajoutez vos propres repas ou choisissez parmi nos suggestions.</p></div></div>
+      <div class="onboarding-step"><div class="step-icon">🛒</div><div class="step-text"><h3>Gérez votre liste</h3><p>Ajoutez vos articles, cochez-les en faisant vos courses.</p></div></div>
+      <div class="onboarding-step"><div class="step-icon">💪</div><div class="step-text"><h3>Suivez votre santé</h3><p>IMC, métabolisme de base et besoins caloriques calculés pour vous.</p></div></div>
     </div>
-    <div class="onboarding-cta">
+    <div style="padding:0 22px 36px">
       <button class="btn btn-primary btn-full" onclick="goTo('screen-setup-1')">Commencer ✨</button>
-      <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="skipSetup()">J'ai déjà un compte</button>
+      <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="skipSetup()">Passer la configuration</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN: SETUP 1 — Foyer -->
+<!-- ===== SETUP 1 — Foyer ===== -->
 <div class="screen" id="screen-setup-1">
   <div class="setup-progress">
     <div class="setup-step-label">Étape 1 sur 4 — Votre foyer</div>
@@ -306,50 +284,32 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   </div>
   <div class="setup-content scroll-area">
     <h2 class="setup-title">Votre foyer 🏠</h2>
-    <p class="setup-sub">Ces informations permettent de calculer les bonnes quantités pour tout le monde.</p>
+    <p class="setup-sub">Ces informations permettent de calculer les bonnes quantités.</p>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Adultes</label>
-        <div class="stepper">
-          <button class="stepper-btn" onclick="stepperChange('adults',-1)">−</button>
-          <span class="stepper-val" id="val-adults">2</span>
-          <button class="stepper-btn" onclick="stepperChange('adults',1)">+</button>
-        </div>
+      <div class="form-group"><label class="form-label">Adultes</label>
+        <div class="stepper"><button class="stepper-btn" onclick="stepperChange('adults',-1)">−</button><span class="stepper-val" id="val-adults">2</span><button class="stepper-btn" onclick="stepperChange('adults',1)">+</button></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Enfants</label>
-        <div class="stepper">
-          <button class="stepper-btn" onclick="stepperChange('children',-1)">−</button>
-          <span class="stepper-val" id="val-children">0</span>
-          <button class="stepper-btn" onclick="stepperChange('children',1)">+</button>
-        </div>
+      <div class="form-group"><label class="form-label">Enfants</label>
+        <div class="stepper"><button class="stepper-btn" onclick="stepperChange('children',-1)">−</button><span class="stepper-val" id="val-children">0</span><button class="stepper-btn" onclick="stepperChange('children',1)">+</button></div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Budget hebdomadaire habituel</label>
-      <div class="budget-input-big">
-        <span class="budget-currency">€</span>
-        <input type="number" class="budget-field" id="setup-budget" value="80" min="20" max="500">
+    <div class="form-group"><label class="form-label">Budget hebdomadaire (€)</label>
+      <div style="display:flex;align-items:center;border:1.5px solid var(--bg2);border-radius:var(--radius-sm);overflow:hidden;background:var(--surface)">
+        <span style="padding:0 14px;font-size:22px;font-weight:900;color:var(--primary);background:var(--primary-bg);height:52px;display:flex;align-items:center">€</span>
+        <input type="number" style="flex:1;border:none;outline:none;font-size:28px;font-weight:900;color:var(--ink);padding:0 14px;font-family:var(--font);background:transparent" id="setup-budget" value="80" min="20" max="500">
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Repas à prévoir par semaine</label>
-      <div class="stepper">
-        <button class="stepper-btn" onclick="stepperChange('meals',-1)">−</button>
-        <span class="stepper-val" id="val-meals">10</span>
-        <button class="stepper-btn" onclick="stepperChange('meals',1)">+</button>
-      </div>
+    <div class="form-group"><label class="form-label">Repas à prévoir / semaine</label>
+      <div class="stepper"><button class="stepper-btn" onclick="stepperChange('meals',-1)">−</button><span class="stepper-val" id="val-meals">10</span><button class="stepper-btn" onclick="stepperChange('meals',1)">+</button></div>
     </div>
   </div>
-  <div class="setup-footer">
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-secondary" onclick="goTo('screen-onboarding')">Retour</button>
-      <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-2')">Continuer →</button>
-    </div>
-  </div>
+  <div class="setup-footer"><div style="display:flex;gap:10px">
+    <button class="btn btn-secondary" onclick="goTo('screen-onboarding')">Retour</button>
+    <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-2')">Continuer →</button>
+  </div></div>
 </div>
 
-<!-- SCREEN: SETUP 2 — Préférences -->
+<!-- ===== SETUP 2 — Préférences ===== -->
 <div class="screen" id="screen-setup-2">
   <div class="setup-progress">
     <div class="setup-step-label">Étape 2 sur 4 — Préférences alimentaires</div>
@@ -358,8 +318,7 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   <div class="setup-content scroll-area">
     <h2 class="setup-title">Vos préférences 🥗</h2>
     <p class="setup-sub">Sélectionnez tout ce qui s'applique à votre foyer.</p>
-    <div class="form-group">
-      <label class="form-label">Régime alimentaire</label>
+    <div class="form-group"><label class="form-label">Régime alimentaire</label>
       <div class="chips" id="chips-diet">
         <div class="chip selected" data-val="omnivore" onclick="toggleChip(this,'diet')">🍖 Omnivore</div>
         <div class="chip" data-val="vegetarian" onclick="toggleChip(this,'diet')">🥦 Végétarien</div>
@@ -369,8 +328,7 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
         <div class="chip" data-val="glutenfree" onclick="toggleChip(this,'diet')">🌾 Sans gluten</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Allergies / Exclusions</label>
+    <div class="form-group"><label class="form-label">Allergies / Exclusions</label>
       <div class="chips" id="chips-allergy">
         <div class="chip" data-val="peanuts" onclick="toggleChip(this,'allergy')">🥜 Arachides</div>
         <div class="chip" data-val="milk" onclick="toggleChip(this,'allergy')">🥛 Lait</div>
@@ -379,27 +337,20 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
         <div class="chip" data-val="eggs" onclick="toggleChip(this,'allergy')">🥚 Œufs</div>
         <div class="chip" data-val="nuts" onclick="toggleChip(this,'allergy')">🌰 Noix</div>
         <div class="chip" data-val="fish" onclick="toggleChip(this,'allergy')">🐟 Poisson</div>
-        <div class="chip" data-val="soy" onclick="toggleChip(this,'allergy')">🫘 Soja</div>
       </div>
-      <div class="allergy-disclaimer">
-        <span class="allergy-disclaimer-icon">⚠️</span>
-        <span class="allergy-disclaimer-text">Les recommandations ne remplacent pas un avis médical. Vérifiez toujours les étiquettes et ingrédients en cas d'allergie ou d'intolérance.</span>
-      </div>
+      <div class="allergy-disclaimer"><span class="allergy-disclaimer-icon">⚠️</span><span class="allergy-disclaimer-text">Les recommandations ne remplacent pas un avis médical. Vérifiez toujours les étiquettes en cas d'allergie.</span></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Aliments à éviter</label>
+    <div class="form-group"><label class="form-label">Aliments à éviter</label>
       <input type="text" class="form-input" id="setup-avoid" placeholder="Ex : champignons, courgettes…">
     </div>
   </div>
-  <div class="setup-footer">
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-secondary" onclick="goTo('screen-setup-1')">Retour</button>
-      <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-3')">Continuer →</button>
-    </div>
-  </div>
+  <div class="setup-footer"><div style="display:flex;gap:10px">
+    <button class="btn btn-secondary" onclick="goTo('screen-setup-1')">Retour</button>
+    <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-3')">Continuer →</button>
+  </div></div>
 </div>
 
-<!-- SCREEN: SETUP 3 — Habitudes -->
+<!-- ===== SETUP 3 — Habitudes ===== -->
 <div class="screen" id="screen-setup-3">
   <div class="setup-progress">
     <div class="setup-step-label">Étape 3 sur 4 — Vos habitudes</div>
@@ -407,9 +358,8 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   </div>
   <div class="setup-content scroll-area">
     <h2 class="setup-title">Vos habitudes 🍳</h2>
-    <p class="setup-sub">Pour des recommandations vraiment adaptées à votre quotidien.</p>
-    <div class="form-group">
-      <label class="form-label">Temps disponible pour cuisiner</label>
+    <p class="setup-sub">Pour des recommandations adaptées à votre quotidien.</p>
+    <div class="form-group"><label class="form-label">Temps disponible pour cuisiner</label>
       <div class="chips" id="chips-time">
         <div class="chip" data-val="15" onclick="toggleChip(this,'time')">⚡ &lt;15 min</div>
         <div class="chip selected" data-val="30" onclick="toggleChip(this,'time')">🕐 30 min</div>
@@ -417,36 +367,24 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
         <div class="chip" data-val="60" onclick="toggleChip(this,'time')">👨‍🍳 1h+</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Niveau en cuisine</label>
+    <div class="form-group"><label class="form-label">Niveau en cuisine</label>
       <div class="chips" id="chips-level">
         <div class="chip" data-val="beginner" onclick="toggleChip(this,'level')">🌱 Débutant</div>
         <div class="chip selected" data-val="intermediate" onclick="toggleChip(this,'level')">👨‍🍳 Intermédiaire</div>
         <div class="chip" data-val="expert" onclick="toggleChip(this,'level')">⭐ Expert</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Repas pris à l'extérieur / semaine</label>
-      <div class="stepper">
-        <button class="stepper-btn" onclick="stepperChange('outside',-1)">−</button>
-        <span class="stepper-val" id="val-outside">2</span>
-        <button class="stepper-btn" onclick="stepperChange('outside',1)">+</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Aliments préférés</label>
-      <input type="text" class="form-input" id="setup-fav" placeholder="Ex : poulet, pâtes, légumes…">
+    <div class="form-group"><label class="form-label">Repas pris à l'extérieur / semaine</label>
+      <div class="stepper"><button class="stepper-btn" onclick="stepperChange('outside',-1)">−</button><span class="stepper-val" id="val-outside">2</span><button class="stepper-btn" onclick="stepperChange('outside',1)">+</button></div>
     </div>
   </div>
-  <div class="setup-footer">
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-secondary" onclick="goTo('screen-setup-2')">Retour</button>
-      <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-4')">Continuer →</button>
-    </div>
-  </div>
+  <div class="setup-footer"><div style="display:flex;gap:10px">
+    <button class="btn btn-secondary" onclick="goTo('screen-setup-2')">Retour</button>
+    <button class="btn btn-primary" style="flex:1" onclick="goTo('screen-setup-4')">Continuer →</button>
+  </div></div>
 </div>
 
-<!-- SCREEN: SETUP 4 — Stock -->
+<!-- ===== SETUP 4 — Stock ===== -->
 <div class="screen" id="screen-setup-4">
   <div class="setup-progress">
     <div class="setup-step-label">Étape 4 sur 4 — Votre stock</div>
@@ -454,9 +392,8 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   </div>
   <div class="setup-content scroll-area">
     <h2 class="setup-title">Votre stock 📦</h2>
-    <p class="setup-sub">Indiquez ce que vous avez déjà. L'application en tiendra compte pour réduire vos achats.</p>
-    <div class="form-group">
-      <label class="form-label">Placard</label>
+    <p class="setup-sub">Indiquez ce que vous avez déjà pour réduire vos achats.</p>
+    <div class="form-group"><label class="form-label">Placard</label>
       <div class="chips" id="chips-pantry">
         <div class="chip selected" data-val="rice" onclick="toggleChip(this,'pantry')">🍚 Riz</div>
         <div class="chip selected" data-val="pasta" onclick="toggleChip(this,'pantry')">🍝 Pâtes</div>
@@ -465,37 +402,24 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
         <div class="chip selected" data-val="spices" onclick="toggleChip(this,'pantry')">🌶️ Épices</div>
         <div class="chip" data-val="canned" onclick="toggleChip(this,'pantry')">🥫 Conserves</div>
         <div class="chip" data-val="lentils" onclick="toggleChip(this,'pantry')">🫘 Lentilles</div>
-        <div class="chip" data-val="sugar" onclick="toggleChip(this,'pantry')">🍬 Sucre</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Frigo</label>
+    <div class="form-group"><label class="form-label">Frigo</label>
       <div class="chips" id="chips-fridge">
         <div class="chip selected" data-val="eggs" onclick="toggleChip(this,'fridge')">🥚 Œufs</div>
         <div class="chip" data-val="butter" onclick="toggleChip(this,'fridge')">🧈 Beurre</div>
         <div class="chip" data-val="cheese" onclick="toggleChip(this,'fridge')">🧀 Fromage</div>
         <div class="chip" data-val="milk" onclick="toggleChip(this,'fridge')">🥛 Lait</div>
-        <div class="chip" data-val="yogurt" onclick="toggleChip(this,'fridge')">🫙 Yaourts</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Ajouter un produit</label>
-      <div style="display:flex;gap:8px">
-        <input type="text" class="form-input" id="setup-stock-input" placeholder="Ex : courgettes…" style="flex:1">
-        <button class="btn btn-primary btn-sm" onclick="addSetupStock()">+</button>
-      </div>
-      <div id="setup-stock-list" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"></div>
-    </div>
   </div>
-  <div class="setup-footer">
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-secondary" onclick="goTo('screen-setup-3')">Retour</button>
-      <button class="btn btn-primary" style="flex:1" onclick="finishSetup()">Terminer 🎉</button>
-    </div>
-  </div>
+  <div class="setup-footer"><div style="display:flex;gap:10px">
+    <button class="btn btn-secondary" onclick="goTo('screen-setup-3')">Retour</button>
+    <button class="btn btn-primary" style="flex:1" onclick="finishSetup()">Terminer 🎉</button>
+  </div></div>
 </div>
 
-<!-- SCREEN: HOME -->
+<!-- ===== HOME ===== -->
 <div class="screen" id="screen-home">
   <div class="scroll-area">
     <div class="home-header">
@@ -503,69 +427,39 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
       <div class="home-title">Cette semaine</div>
       <div class="home-week-card">
         <div class="home-week-meta">
-          <div class="home-meta-item">
-            <div class="home-meta-val" id="home-budget">80€</div>
-            <div class="home-meta-label">Budget</div>
-          </div>
+          <div class="home-meta-item"><div class="home-meta-val" id="home-budget">80€</div><div class="home-meta-label">Budget</div></div>
           <div class="home-meta-sep"></div>
-          <div class="home-meta-item">
-            <div class="home-meta-val" id="home-meals">10</div>
-            <div class="home-meta-label">Repas</div>
-          </div>
+          <div class="home-meta-item"><div class="home-meta-val" id="home-meals">0</div><div class="home-meta-label">Repas</div></div>
           <div class="home-meta-sep"></div>
-          <div class="home-meta-item">
-            <div class="home-meta-val" id="home-persons">2</div>
-            <div class="home-meta-label">Personnes</div>
-          </div>
+          <div class="home-meta-item"><div class="home-meta-val" id="home-persons">2</div><div class="home-meta-label">Personnes</div></div>
         </div>
         <button class="home-cta-btn" onclick="navTo('plan')">📋 Voir mon plan</button>
       </div>
     </div>
-    <div class="section-header">
-      <div><div class="section-title">Actions rapides</div></div>
-    </div>
+    <div class="section-header"><div><div class="section-title">Actions rapides</div></div></div>
     <div class="quick-actions stagger">
-      <div class="quick-card" onclick="openMagicSheet()">
-        <div class="quick-card-icon">✨</div>
-        <div class="quick-card-title">Fais-le pour moi</div>
-        <div class="quick-card-sub">Budget + personnes → plan complet</div>
-      </div>
-      <div class="quick-card" onclick="navTo('chat')">
-        <div class="quick-card-icon">💬</div>
-        <div class="quick-card-title">Parler à Panier</div>
-        <div class="quick-card-sub">Modifiez en langage naturel</div>
-      </div>
-      <div class="quick-card" onclick="navTo('list')">
-        <div class="quick-card-icon">🛒</div>
-        <div class="quick-card-title">Ma liste</div>
-        <div class="quick-card-sub">Voir et cocher mes courses</div>
-      </div>
-      <div class="quick-card" onclick="navTo('stock')">
-        <div class="quick-card-icon">📦</div>
-        <div class="quick-card-title">Mon stock</div>
-        <div class="quick-card-sub">Gérer ce que j'ai déjà</div>
-      </div>
+      <div class="quick-card" onclick="openMagicSheet()"><div class="quick-card-icon">✨</div><div class="quick-card-title">Fais-le pour moi</div><div class="quick-card-sub">Suggestions de repas rapides</div></div>
+      <div class="quick-card" onclick="navTo('chat')"><div class="quick-card-icon">💬</div><div class="quick-card-title">Assistant</div><div class="quick-card-sub">Gérez en langage naturel</div></div>
+      <div class="quick-card" onclick="navTo('list')"><div class="quick-card-icon">🛒</div><div class="quick-card-title">Ma liste</div><div class="quick-card-sub">Ajouter & cocher mes courses</div></div>
+      <div class="quick-card" onclick="navTo('health')"><div class="quick-card-icon">💪</div><div class="quick-card-title">Ma santé</div><div class="quick-card-sub">IMC & métabolisme de base</div></div>
     </div>
     <div class="section-header">
       <div><div class="section-title">Repas de la semaine</div><div class="section-sub">Appuyez pour modifier</div></div>
       <button class="section-action" onclick="navTo('plan')">Tout voir</button>
     </div>
-    <div style="padding:0 20px">
-      <div class="card" id="home-meal-preview"></div>
-    </div>
-    <div style="padding:16px 20px 0" id="stock-alert-container"></div>
-    <div style="height:20px"></div>
+    <div style="padding:0 16px"><div class="card" id="home-meal-preview"></div></div>
+    <div style="height:16px"></div>
   </div>
   <div class="bottom-nav">
     <button class="nav-item active" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
     <button class="nav-item" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
     <button class="nav-item" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
-    <button class="nav-item" onclick="navTo('stock')"><span class="nav-icon">📦</span>Stock</button>
+    <button class="nav-item" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
     <button class="nav-item" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
   </div>
 </div>
 
-<!-- SCREEN: PLAN -->
+<!-- ===== PLAN ===== -->
 <div class="screen" id="screen-plan">
   <div class="topbar">
     <button class="btn-icon" onclick="navTo('home')">←</button>
@@ -573,13 +467,10 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
     <button class="btn-icon" onclick="openMagicSheet()">✨</button>
   </div>
   <div class="budget-bar">
-    <div class="budget-info">
-      <div class="budget-amount" id="plan-budget-display">~72€</div>
-      <div class="budget-label">Estimation budget</div>
-    </div>
-    <div class="budget-progress">
-      <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;text-align:right" id="plan-budget-pct">90%</div>
-      <div class="progress-bar"><div class="progress-fill" id="plan-budget-bar" style="width:90%"></div></div>
+    <div><div class="budget-amount" id="plan-budget-display">80€</div><div class="budget-label">Budget semaine</div></div>
+    <div style="flex:1;margin-left:12px">
+      <div style="font-size:11px;color:var(--ink3);margin-bottom:4px;text-align:right" id="plan-meals-count">0 repas planifiés</div>
+      <div class="progress-bar"><div class="progress-fill" id="plan-progress-bar" style="width:0%"></div></div>
     </div>
   </div>
   <div class="scroll-area" id="plan-content"></div>
@@ -587,46 +478,142 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
     <button class="nav-item" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
     <button class="nav-item active" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
     <button class="nav-item" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
-    <button class="nav-item" onclick="navTo('stock')"><span class="nav-icon">📦</span>Stock</button>
+    <button class="nav-item" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
     <button class="nav-item" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
   </div>
 </div>
 
-<!-- SCREEN: LIST -->
+<!-- ===== LISTE ===== -->
 <div class="screen" id="screen-list">
   <div class="topbar">
     <button class="btn-icon" onclick="navTo('home')">←</button>
-    <div class="topbar-title">Ma liste de courses<span class="topbar-sub" id="list-subtitle">0 articles</span></div>
+    <div class="topbar-title">Ma liste de courses<span class="topbar-sub" id="list-subtitle">0 article</span></div>
     <button class="btn-icon" onclick="shareList()">📤</button>
+  </div>
+  <div class="list-add-bar">
+    <div style="display:flex;gap:8px">
+      <input type="text" class="form-input" id="new-item-name" placeholder="Ajouter un article…" style="flex:1;padding:11px 13px" onkeydown="if(event.key==='Enter')addListItem()">
+      <input type="text" class="form-input" id="new-item-qty" placeholder="Qté" style="width:72px;padding:11px 10px" onkeydown="if(event.key==='Enter')addListItem()">
+      <button class="btn btn-primary btn-sm" onclick="addListItem()" style="padding:11px 14px">+</button>
+    </div>
   </div>
   <div class="scroll-area" id="list-content"></div>
   <div class="bottom-nav">
     <button class="nav-item" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
     <button class="nav-item" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
     <button class="nav-item active" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
-    <button class="nav-item" onclick="navTo('stock')"><span class="nav-icon">📦</span>Stock</button>
+    <button class="nav-item" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
     <button class="nav-item" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
   </div>
 </div>
 
-<!-- SCREEN: STOCK -->
-<div class="screen" id="screen-stock">
+<!-- ===== SANTÉ ===== -->
+<div class="screen" id="screen-health">
   <div class="topbar">
     <button class="btn-icon" onclick="navTo('home')">←</button>
-    <div class="topbar-title">Mon stock<span class="topbar-sub" id="stock-subtitle">Placard & frigo</span></div>
-    <button class="btn-icon" onclick="openAddStockSheet()">+</button>
+    <div class="topbar-title">Ma santé 💪<span class="topbar-sub">IMC & Métabolisme de base</span></div>
   </div>
-  <div class="scroll-area" id="stock-content"></div>
+  <div class="scroll-area">
+    <!-- Formulaire -->
+    <div style="padding:16px 20px">
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:14px;font-weight:800;margin-bottom:14px">📋 Vos informations</div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Sexe</label>
+            <select class="form-select" id="health-sex" onchange="calcHealth()">
+              <option value="male">Homme</option>
+              <option value="female">Femme</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Âge (ans)</label>
+            <input type="number" class="form-input" id="health-age" value="30" min="10" max="100" oninput="calcHealth()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Taille (cm)</label>
+            <input type="number" class="form-input" id="health-height" value="170" min="100" max="250" oninput="calcHealth()">
+          </div>
+          <div class="form-group"><label class="form-label">Poids (kg)</label>
+            <input type="number" class="form-input" id="health-weight" value="70" min="30" max="300" oninput="calcHealth()">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0"><label class="form-label">Niveau d'activité</label>
+          <select class="form-select" id="health-activity" onchange="calcHealth()">
+            <option value="1.2">Sédentaire (peu ou pas d'exercice)</option>
+            <option value="1.375">Légèrement actif (1-3j/semaine)</option>
+            <option value="1.55" selected>Modérément actif (3-5j/semaine)</option>
+            <option value="1.725">Très actif (6-7j/semaine)</option>
+            <option value="1.9">Extrêmement actif (sport intense)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- IMC -->
+      <div class="health-card">
+        <div class="health-card-title">⚖️ Indice de Masse Corporelle (IMC)</div>
+        <div class="health-result">
+          <div class="health-big" id="imc-val">24.2</div>
+          <div class="health-unit">kg/m²</div>
+          <div class="health-label" id="imc-label">Poids normal</div>
+          <div class="health-sub" id="imc-sub">Votre poids est dans la plage recommandée.</div>
+        </div>
+        <div class="imc-bar"><div class="imc-cursor" id="imc-cursor" style="left:35%"></div></div>
+        <div class="imc-labels">
+          <span>Sous-poids<br>&lt;18.5</span>
+          <span style="text-align:center">Normal<br>18.5–25</span>
+          <span style="text-align:center">Surpoids<br>25–30</span>
+          <span style="text-align:right">Obésité<br>&gt;30</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:10px;font-style:italic">Formule : IMC = Poids (kg) ÷ Taille² (m)</div>
+      </div>
+
+      <!-- Métabolisme de base -->
+      <div class="health-card">
+        <div class="health-card-title">🔥 Métabolisme de base (MB) — Harris & Benedict</div>
+        <div class="health-result">
+          <div class="health-big" id="mb-val">1680</div>
+          <div class="health-unit">kcal/jour</div>
+          <div class="health-sub" id="mb-sub">Calories brûlées au repos complet.</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;margin:12px 0;font-size:11px;color:var(--ink2);line-height:1.7">
+          <div id="mb-formula-text"></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);font-style:italic">Formule révisée de Harris & Benedict (1984)</div>
+      </div>
+
+      <!-- TDEE -->
+      <div class="health-card">
+        <div class="health-card-title">⚡ Dépense Énergétique Totale (TDEE)</div>
+        <div class="health-result">
+          <div class="health-big" id="tdee-val">2604</div>
+          <div class="health-unit">kcal/jour</div>
+          <div class="health-sub">Calories totales selon votre niveau d'activité.</div>
+        </div>
+        <div class="macro-grid">
+          <div class="macro-item"><div class="macro-val" id="macro-prot">130g</div><div class="macro-label">Protéines</div></div>
+          <div class="macro-item"><div class="macro-val" id="macro-carb">325g</div><div class="macro-label">Glucides</div></div>
+          <div class="macro-item"><div class="macro-val" id="macro-fat">87g</div><div class="macro-label">Lipides</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:10px;font-style:italic">TDEE = MB × Facteur d'activité (Mifflin-St Jeor pour les macros)</div>
+      </div>
+
+      <div class="allergy-disclaimer" style="margin-top:4px">
+        <span class="allergy-disclaimer-icon">⚠️</span>
+        <span class="allergy-disclaimer-text">Ces calculs sont des estimations à titre indicatif. Consultez un professionnel de santé pour un suivi personnalisé.</span>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+  </div>
   <div class="bottom-nav">
     <button class="nav-item" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
     <button class="nav-item" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
     <button class="nav-item" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
-    <button class="nav-item active" onclick="navTo('stock')"><span class="nav-icon">📦</span>Stock</button>
+    <button class="nav-item active" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
     <button class="nav-item" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
   </div>
 </div>
 
-<!-- SCREEN: PROFILE -->
+<!-- ===== PROFIL ===== -->
 <div class="screen" id="screen-profile">
   <div class="scroll-area">
     <div class="profile-header">
@@ -635,66 +622,65 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
       <div class="profile-sub" id="profile-sub-text">2 adultes · Omnivore</div>
     </div>
     <div class="profile-stats stagger">
-      <div class="profile-stat"><div class="profile-stat-val" id="stat-weeks">1</div><div class="profile-stat-label">Semaines</div></div>
-      <div class="profile-stat"><div class="profile-stat-val" id="stat-saved">~12€</div><div class="profile-stat-label">Économisés</div></div>
-      <div class="profile-stat"><div class="profile-stat-val" id="stat-meals">10</div><div class="profile-stat-label">Repas planifiés</div></div>
+      <div class="profile-stat"><div class="profile-stat-val" id="stat-meals">0</div><div class="profile-stat-label">Repas planifiés</div></div>
+      <div class="profile-stat"><div class="profile-stat-val" id="stat-items">0</div><div class="profile-stat-label">Articles liste</div></div>
+      <div class="profile-stat"><div class="profile-stat-val" id="stat-stock">0</div><div class="profile-stat-label">En stock</div></div>
     </div>
-    <div class="section-header" style="margin-top:16px"><div class="section-title">Paramètres</div></div>
+    <div class="section-header" style="margin-top:14px"><div class="section-title">Paramètres</div></div>
     <div class="settings-group">
-      <div class="settings-item" onclick="goTo('screen-setup-1')">
-        <div class="settings-icon" style="background:#D8F3DC">🏠</div>
-        <div class="settings-label">Mon foyer</div>
-        <span class="settings-val" id="settings-household">2 adultes</span>
-        <span class="settings-arrow">›</span>
-      </div>
-      <div class="settings-item" onclick="goTo('screen-setup-2')">
-        <div class="settings-icon" style="background:#FFF0E0">🥗</div>
-        <div class="settings-label">Préférences alimentaires</div>
-        <span class="settings-arrow">›</span>
-      </div>
-      <div class="settings-item" onclick="goTo('screen-setup-3')">
-        <div class="settings-icon" style="background:#E8F4FD">🍳</div>
-        <div class="settings-label">Habitudes de cuisine</div>
-        <span class="settings-arrow">›</span>
-      </div>
-      <div class="settings-item" onclick="navTo('stock')">
-        <div class="settings-icon" style="background:#F3E8FF">📦</div>
-        <div class="settings-label">Mon stock</div>
-        <span class="settings-arrow">›</span>
-      </div>
+      <div class="settings-item" onclick="goTo('screen-setup-1')"><div class="settings-icon" style="background:#D8F3DC">🏠</div><div class="settings-label">Mon foyer</div><span class="settings-arrow">›</span></div>
+      <div class="settings-item" onclick="goTo('screen-setup-2')"><div class="settings-icon" style="background:#FFF0E0">🥗</div><div class="settings-label">Préférences alimentaires</div><span class="settings-arrow">›</span></div>
+      <div class="settings-item" onclick="goTo('screen-setup-3')"><div class="settings-icon" style="background:#E8F4FD">🍳</div><div class="settings-label">Habitudes de cuisine</div><span class="settings-arrow">›</span></div>
+      <div class="settings-item" onclick="navTo('health')"><div class="settings-icon" style="background:#F3E8FF">💪</div><div class="settings-label">Ma santé (IMC & Métabolisme)</div><span class="settings-arrow">›</span></div>
+      <div class="settings-item" onclick="navTo('stock')"><div class="settings-icon" style="background:#FEF3C7">📦</div><div class="settings-label">Mon stock</div><span class="settings-arrow">›</span></div>
     </div>
-
     <div class="section-header"><div class="section-title">Confidentialité</div></div>
     <div class="settings-group">
       <div class="settings-item"><div class="settings-icon" style="background:#FDECEA">🔒</div><div class="settings-label">Politique de confidentialité</div><span class="settings-arrow">›</span></div>
-      <div class="settings-item"><div class="settings-icon" style="background:#FDECEA">📤</div><div class="settings-label">Exporter mes données</div><span class="settings-arrow">›</span></div>
-      <div class="settings-item"><div class="settings-icon" style="background:#FDECEA">🗑️</div><div class="settings-label" style="color:var(--danger)">Supprimer mon compte</div><span class="settings-arrow">›</span></div>
+      <div class="settings-item" onclick="exportData()"><div class="settings-icon" style="background:#FDECEA">📤</div><div class="settings-label">Exporter mes données</div><span class="settings-arrow">›</span></div>
     </div>
-    <div style="height:100px"></div>
+    <div style="height:90px"></div>
   </div>
   <div class="bottom-nav">
     <button class="nav-item" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
     <button class="nav-item" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
     <button class="nav-item" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
-    <button class="nav-item" onclick="navTo('stock')"><span class="nav-icon">📦</span>Stock</button>
+    <button class="nav-item" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
     <button class="nav-item active" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
   </div>
 </div>
 
-<!-- SCREEN: CHAT -->
+<!-- ===== STOCK ===== -->
+<div class="screen" id="screen-stock">
+  <div class="topbar">
+    <button class="btn-icon" onclick="navTo('profile')">←</button>
+    <div class="topbar-title">Mon stock<span class="topbar-sub" id="stock-subtitle">Placard & frigo</span></div>
+    <button class="btn-icon" onclick="openAddStockSheet()">+</button>
+  </div>
+  <div class="scroll-area" id="stock-content"></div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="navTo('home')"><span class="nav-icon">🏠</span>Accueil</button>
+    <button class="nav-item" onclick="navTo('plan')"><span class="nav-icon">📅</span>Plan</button>
+    <button class="nav-item" onclick="navTo('list')"><span class="nav-icon">🛒</span>Liste</button>
+    <button class="nav-item" onclick="navTo('health')"><span class="nav-icon">💪</span>Santé</button>
+    <button class="nav-item" onclick="navTo('profile')"><span class="nav-icon">👤</span>Profil</button>
+  </div>
+</div>
+
+<!-- ===== CHAT ===== -->
 <div class="screen" id="screen-chat">
   <div class="topbar">
     <button class="btn-icon" onclick="navTo('home')">←</button>
-    <div class="topbar-title">Panier IA<span class="topbar-sub">Parlez-moi naturellement</span></div>
+    <div class="topbar-title">Assistant Panier<span class="topbar-sub">Parlez-moi naturellement</span></div>
   </div>
   <div class="chat-area" id="chat-messages"></div>
   <div class="chat-suggestions" id="chat-suggestions">
     <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter des tomates</button>
     <button class="chat-sug" onclick="sendSuggestion(this)">Budget à 60€</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter un repas lundi</button>
     <button class="chat-sug" onclick="sendSuggestion(this)">Vider ma liste</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Combien de personnes ?</button>
     <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter du poulet</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Mon budget ?</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Combien de personnes ?</button>
   </div>
   <div class="chat-input-row">
     <input type="text" class="chat-input" id="chat-input" placeholder="Écrivez votre demande…" onkeydown="if(event.key==='Enter')sendChat()">
@@ -702,75 +688,53 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   </div>
 </div>
 
-<!-- SCREEN: LOADING -->
+<!-- ===== LOADING ===== -->
 <div class="screen" id="screen-loading">
   <div class="loading-screen">
     <div class="loading-icon">🧠</div>
-    <div class="loading-title">Je prépare votre semaine…</div>
-    <div class="loading-sub">J'optimise les ingrédients, les quantités et le budget pour vous.</div>
+    <div class="loading-title">Je prépare des suggestions…</div>
+    <div class="loading-sub">Je sélectionne des recettes adaptées à vos préférences.</div>
     <div class="loading-steps">
       <div class="loading-step" id="lstep-1"><div class="loading-step-icon">📊</div><div class="loading-step-text">Analyse de votre profil…</div></div>
-      <div class="loading-step" id="lstep-2"><div class="loading-step-icon">🍽️</div><div class="loading-step-text">Sélection des repas équilibrés…</div></div>
-      <div class="loading-step" id="lstep-3"><div class="loading-step-icon">🔄</div><div class="loading-step-text">Optimisation des ingrédients…</div></div>
-      <div class="loading-step" id="lstep-4"><div class="loading-step-icon">💰</div><div class="loading-step-text">Vérification du budget…</div></div>
-      <div class="loading-step" id="lstep-5"><div class="loading-step-icon">✅</div><div class="loading-step-text">Finalisation de votre liste…</div></div>
+      <div class="loading-step" id="lstep-2"><div class="loading-step-icon">🍽️</div><div class="loading-step-text">Sélection des recettes…</div></div>
+      <div class="loading-step" id="lstep-3"><div class="loading-step-icon">✅</div><div class="loading-step-text">Suggestions prêtes !</div></div>
     </div>
   </div>
 </div>
 
-<!-- OVERLAYS & SHEETS -->
+<!-- ===== OVERLAYS ===== -->
 <div class="overlay" id="overlay" onclick="closeAllSheets()"></div>
 
-<!-- Magic Sheet -->
+<!-- Magic Sheet — Suggestions de recettes -->
 <div class="bottom-sheet" id="sheet-magic">
   <div class="sheet-handle"></div>
-  <div class="sheet-title">✨ Fais-le pour moi</div>
+  <div class="sheet-title">✨ Suggestions de repas</div>
   <div style="padding:0 20px 20px">
-    <p style="font-size:14px;color:var(--ink3);margin-bottom:20px;line-height:1.5">Indiquez simplement votre budget. Je génère votre plan complet en quelques secondes.</p>
-    <div class="form-group">
-      <label class="form-label">Budget cette semaine</label>
-      <div class="budget-input-big">
-        <span class="budget-currency">€</span>
-        <input type="number" class="budget-field" id="magic-budget" value="80">
+    <p style="font-size:13px;color:var(--ink3);margin-bottom:16px;line-height:1.5">Choisissez des repas à ajouter à votre plan. Appuyez sur + pour les ajouter.</p>
+    <div id="recipe-suggestions-list"></div>
+    <div style="margin-top:12px">
+      <div class="form-group"><label class="form-label">Ajouter à quel jour ?</label>
+        <select class="form-select" id="recipe-target-day">
+          <option value="Lundi">Lundi</option><option value="Mardi">Mardi</option>
+          <option value="Mercredi">Mercredi</option><option value="Jeudi">Jeudi</option>
+          <option value="Vendredi">Vendredi</option><option value="Samedi">Samedi</option>
+          <option value="Dimanche">Dimanche</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0"><label class="form-label">Repas</label>
+        <select class="form-select" id="recipe-target-type">
+          <option value="lunch">Déjeuner</option>
+          <option value="dinner">Dîner</option>
+        </select>
       </div>
     </div>
-    <div class="form-row" style="margin-bottom:20px">
-      <div class="form-group">
-        <label class="form-label">Personnes</label>
-        <div class="stepper">
-          <button class="stepper-btn" onclick="stepperChange('magic-persons',-1)">−</button>
-          <span class="stepper-val" id="val-magic-persons">2</span>
-          <button class="stepper-btn" onclick="stepperChange('magic-persons',1)">+</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Jours</label>
-        <div class="stepper">
-          <button class="stepper-btn" onclick="stepperChange('magic-days',-1)">−</button>
-          <span class="stepper-val" id="val-magic-days">5</span>
-          <button class="stepper-btn" onclick="stepperChange('magic-days',1)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Objectifs</label>
-      <div class="chips" id="magic-objectives">
-        <div class="chip selected" data-val="balanced" onclick="toggleChip(this,'magic-obj')">⚖️ Équilibré</div>
-        <div class="chip" data-val="veggies" onclick="toggleChip(this,'magic-obj')">🥦 + Légumes</div>
-        <div class="chip" data-val="protein" onclick="toggleChip(this,'magic-obj')">💪 Protéines</div>
-        <div class="chip" data-val="quick" onclick="toggleChip(this,'magic-obj')">⚡ Rapide</div>
-        <div class="chip" data-val="batch" onclick="toggleChip(this,'magic-obj')">🍱 Batch cooking</div>
-        <div class="chip" data-val="nowaste" onclick="toggleChip(this,'magic-obj')">♻️ Zéro gaspillage</div>
-      </div>
-    </div>
-    <button class="btn btn-primary btn-full" style="font-size:16px;padding:16px" onclick="quickGenerate()">✨ Générer maintenant</button>
   </div>
 </div>
 
-<!-- Swap Sheet -->
+<!-- Meal Edit Sheet -->
 <div class="bottom-sheet" id="sheet-swap">
   <div class="sheet-handle"></div>
-  <div class="sheet-title" id="swap-title">Remplacer ce repas</div>
+  <div class="sheet-title" id="swap-title">Modifier ce repas</div>
   <div style="padding:0 20px 20px" id="swap-options"></div>
 </div>
 
@@ -779,16 +743,9 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   <div class="sheet-handle"></div>
   <div class="sheet-title">Ajouter au stock</div>
   <div style="padding:0 20px 20px">
-    <div class="form-group">
-      <label class="form-label">Produit</label>
-      <input type="text" class="form-input" id="stock-name-input" placeholder="Ex : courgettes">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Quantité</label>
-      <input type="text" class="form-input" id="stock-qty-input" placeholder="Ex : 3, 500g, 1 boîte">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Catégorie</label>
+    <div class="form-group"><label class="form-label">Produit</label><input type="text" class="form-input" id="stock-name-input" placeholder="Ex : courgettes"></div>
+    <div class="form-group"><label class="form-label">Quantité</label><input type="text" class="form-input" id="stock-qty-input" placeholder="Ex : 3, 500g, 1 boîte"></div>
+    <div class="form-group"><label class="form-label">Catégorie</label>
       <div class="chips" id="chips-stock-cat">
         <div class="chip selected" data-val="pantry" onclick="toggleChip(this,'stock-cat')">📦 Placard</div>
         <div class="chip" data-val="fridge" onclick="toggleChip(this,'stock-cat')">❄️ Frigo</div>
@@ -807,60 +764,50 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
 // STATE
 // ============================================================
 const state = {
-  profile: { adults:2, children:0, meals:10, budget:80, diet:['omnivore'], allergies:[], avoid:'', cookTime:30, level:'intermediate', outside:2, favorites:'', pantry:['rice','pasta','oil','spices'], fridge:['eggs'], customStock:[] },
-  plan: [], shoppingList: [], stock: [], checkedItems: new Set(),
-  currentSwap: null, setupDone: false, chatHistory: [], weeksCount: 1
-};
-
-// ============================================================
-// MEAL DATABASE
-// ============================================================
-const MEALS = {
-  lunch: [
-    {name:'Salade de pâtes au thon',time:'15 min',ingredients:['pâtes','thon en boîte','tomates cerises','olives','huile d\'olive'],cost:3.5,tags:['quick','balanced']},
-    {name:'Wrap poulet crudités',time:'10 min',ingredients:['tortillas','poulet cuit','salade','tomates','fromage frais'],cost:4,tags:['quick','protein']},
-    {name:'Soupe de légumes maison',time:'25 min',ingredients:['carottes','poireaux','pommes de terre','bouillon'],cost:2.5,tags:['veggies','balanced']},
-    {name:'Riz sauté aux légumes',time:'20 min',ingredients:['riz','carottes','petits pois','sauce soja'],cost:3,tags:['quick','veggies']},
-    {name:'Taboulé maison',time:'20 min',ingredients:['semoule','tomates','concombre','menthe','citron'],cost:2.5,tags:['veggies','quick']},
-    {name:'Omelette aux champignons',time:'15 min',ingredients:['champignons','persil','beurre'],cost:2.5,tags:['quick','protein']},
-    {name:'Sandwich jambon-fromage',time:'5 min',ingredients:['pain de mie','jambon','fromage','beurre'],cost:2,tags:['quick']},
-    {name:'Quiche lorraine',time:'40 min',ingredients:['pâte brisée','lardons','crème','fromage'],cost:4.5,tags:['balanced']},
-  ],
-  dinner: [
-    {name:'Poulet rôti aux herbes',time:'50 min',ingredients:['poulet entier','herbes de Provence','ail','citron','pommes de terre'],cost:8,tags:['balanced','protein']},
-    {name:'Pâtes bolognaise',time:'35 min',ingredients:['pâtes','viande hachée','tomates concassées','oignon','ail'],cost:5,tags:['balanced']},
-    {name:'Curry de poulet au riz',time:'30 min',ingredients:['poulet','riz','lait de coco','curry','oignon','tomates'],cost:6,tags:['balanced','protein']},
-    {name:'Gratin de légumes',time:'45 min',ingredients:['courgettes','tomates','fromage râpé','crème'],cost:4.5,tags:['veggies','balanced']},
-    {name:'Saumon en papillote',time:'25 min',ingredients:['saumon','citron','herbes','légumes vapeur'],cost:7,tags:['protein','balanced']},
-    {name:'Lentilles aux carottes',time:'30 min',ingredients:['lentilles','carottes','oignon','cumin','tomates'],cost:3,tags:['veggies','balanced','nowaste']},
-    {name:'Steak haché + frites maison',time:'30 min',ingredients:['steak haché','pommes de terre','salade'],cost:5.5,tags:['protein']},
-    {name:'Tarte aux légumes',time:'40 min',ingredients:['pâte brisée','poivrons','courgettes','tomates','fromage'],cost:4,tags:['veggies']},
-    {name:'Risotto aux champignons',time:'35 min',ingredients:['riz arborio','champignons','oignon','parmesan'],cost:5,tags:['balanced']},
-    {name:'Poulet basquaise',time:'45 min',ingredients:['poulet','poivrons','tomates','oignon','ail'],cost:6.5,tags:['balanced','protein']},
-    {name:'Soupe minestrone',time:'30 min',ingredients:['haricots','carottes','céleri','tomates','bouillon'],cost:3.5,tags:['veggies','nowaste']},
-    {name:'Omelette + pommes de terre',time:'20 min',ingredients:['pommes de terre','oignon','persil'],cost:3,tags:['quick','balanced']},
-  ]
+  profile: {adults:2, children:0, meals:10, budget:80, diet:['omnivore'], allergies:[], avoid:'', cookTime:30, level:'intermediate', outside:2},
+  plan: [], shoppingList: [], stock: [], checkedItems: new Set(), chatHistory: []
 };
 
 const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 const DAY_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
+// Recettes suggérées (base de données légère)
+const RECIPES = [
+  {emoji:'🍝', name:'Pâtes bolognaise', time:'35 min', cat:'Dîner'},
+  {emoji:'🍗', name:'Poulet rôti aux herbes', time:'50 min', cat:'Dîner'},
+  {emoji:'🥘', name:'Curry de poulet au riz', time:'30 min', cat:'Dîner'},
+  {emoji:'🥗', name:'Salade niçoise', time:'15 min', cat:'Déjeuner'},
+  {emoji:'🍳', name:'Omelette aux légumes', time:'15 min', cat:'Déjeuner'},
+  {emoji:'🥙', name:'Wrap poulet crudités', time:'10 min', cat:'Déjeuner'},
+  {emoji:'🫕', name:'Gratin de légumes', time:'45 min', cat:'Dîner'},
+  {emoji:'🐟', name:'Saumon en papillote', time:'25 min', cat:'Dîner'},
+  {emoji:'🫘', name:'Lentilles aux carottes', time:'30 min', cat:'Dîner'},
+  {emoji:'🥩', name:'Steak haché + frites', time:'30 min', cat:'Dîner'},
+  {emoji:'🍲', name:'Soupe de légumes', time:'25 min', cat:'Déjeuner'},
+  {emoji:'🧆', name:'Falafels + taboulé', time:'20 min', cat:'Déjeuner'},
+  {emoji:'🍕', name:'Pizza maison', time:'40 min', cat:'Dîner'},
+  {emoji:'🥞', name:'Crêpes salées', time:'20 min', cat:'Déjeuner'},
+  {emoji:'🍜', name:'Ramen maison', time:'35 min', cat:'Dîner'},
+  {emoji:'🥗', name:'Buddha bowl', time:'20 min', cat:'Déjeuner'},
+];
+
 const SHOPPING_CATS = {
-  'Fruits & Légumes':{icon:'🥦',items:['tomates','carottes','salade','pommes de terre','courgettes','poireaux','poivrons','champignons','oignon','ail','citron','concombre','petits pois','céleri','menthe','persil','herbes','légumes vapeur','tomates cerises']},
-  'Viandes & Protéines':{icon:'🥩',items:['poulet','viande hachée','steak haché','saumon','thon en boîte','lardons','jambon','poulet entier','poulet cuit']},
-  'Produits laitiers':{icon:'🧀',items:['fromage','fromage râpé','parmesan','crème','fromage frais','beurre','yaourts','lait de coco']},
-  'Épicerie':{icon:'🛒',items:['pâtes','riz','riz arborio','semoule','lentilles','haricots','tortillas','pain de mie','pâte brisée','sauce soja','tomates concassées','bouillon','olives','curry','cumin','herbes de Provence']},
-  'Autres':{icon:'📦',items:[]}
+  'Fruits & Légumes':{icon:'🥦',keywords:['tomate','carotte','salade','pomme de terre','courgette','poireau','poivron','champignon','oignon','ail','citron','concombre','petits pois','céleri','menthe','persil','herbe','légume','fruit','banane','pomme','poire','orange','fraise','épinard','brocoli','chou']},
+  'Viandes & Protéines':{icon:'🥩',keywords:['poulet','viande','steak','saumon','thon','lardons','jambon','bœuf','porc','dinde','crevette','cabillaud','merlan','sardine']},
+  'Produits laitiers':{icon:'🧀',keywords:['fromage','crème','beurre','yaourt','lait','mozzarella','parmesan','gruyère','camembert']},
+  'Épicerie':{icon:'🛒',keywords:['pâte','riz','semoule','lentille','haricot','tortilla','pain','farine','sauce','bouillon','huile','vinaigre','moutarde','ketchup','mayonnaise','conserve','boîte']},
+  'Boissons':{icon:'🥤',keywords:['eau','jus','lait','café','thé','soda','bière','vin','sirop']},
+  'Hygiène & Maison':{icon:'🧴',keywords:['savon','shampoing','dentifrice','papier','lessive','liquide','éponge','sac','film']},
+  'Autres':{icon:'📦',keywords:[]}
 };
 
 const STOCK_META = {
   rice:{name:'Riz',icon:'🍚',cat:'Placard'}, pasta:{name:'Pâtes',icon:'🍝',cat:'Placard'},
-  flour:{name:'Farine',icon:'🌾',cat:'Placard'}, oil:{name:'Huile d\'olive',icon:'🫙',cat:'Placard'},
+  flour:{name:'Farine',icon:'🌾',cat:'Placard'}, oil:{name:'Huile d'olive',icon:'🫙',cat:'Placard'},
   spices:{name:'Épices',icon:'🌶️',cat:'Placard'}, canned:{name:'Conserves',icon:'🥫',cat:'Placard'},
-  lentils:{name:'Lentilles',icon:'🫘',cat:'Placard'}, sugar:{name:'Sucre',icon:'🍬',cat:'Placard'},
+  lentils:{name:'Lentilles',icon:'🫘',cat:'Placard'},
   eggs:{name:'Œufs',icon:'🥚',cat:'Frigo'}, butter:{name:'Beurre',icon:'🧈',cat:'Frigo'},
-  cheese:{name:'Fromage',icon:'🧀',cat:'Frigo'}, milk:{name:'Lait',icon:'🥛',cat:'Frigo'},
-  yogurt:{name:'Yaourts',icon:'🫙',cat:'Frigo'}
+  cheese:{name:'Fromage',icon:'🧀',cat:'Frigo'}, milk:{name:'Lait',icon:'🥛',cat:'Frigo'}
 };
 
 // ============================================================
@@ -877,52 +824,46 @@ function goTo(id) {
   setTimeout(() => cur.classList.remove('active','exit'), 220);
   nxt.classList.add('active');
   currentScreen = id;
-  onScreenEnter(id);
+  onEnter(id);
 }
 
 function navTo(tab) {
-  const map = {home:'screen-home',plan:'screen-plan',list:'screen-list',stock:'screen-stock',profile:'screen-profile',chat:'screen-chat'};
+  const map = {home:'screen-home',plan:'screen-plan',list:'screen-list',health:'screen-health',profile:'screen-profile',stock:'screen-stock',chat:'screen-chat'};
   goTo(map[tab] || 'screen-home');
 }
 
-function onScreenEnter(id) {
+function onEnter(id) {
   if (id==='screen-home') refreshHome();
   if (id==='screen-plan') refreshPlan();
   if (id==='screen-list') refreshList();
   if (id==='screen-stock') refreshStock();
+  if (id==='screen-health') calcHealth();
+  if (id==='screen-profile') refreshProfile();
   if (id==='screen-chat') initChat();
 }
 
 function skipSetup() {
-  state.setupDone = true;
   buildDefaultStock();
-  generatePlanForDays(5, 80, 2);
+  initPlan();
   goTo('screen-home');
 }
 
 // ============================================================
-// STEPPERS
+// STEPPERS & CHIPS
 // ============================================================
-const SD = {adults:2,children:0,meals:10,outside:2,'magic-persons':2,'magic-days':5};
-
+const SD = {adults:2, children:0, meals:10, outside:2};
 function stepperChange(k, d) {
-  const min = k.includes('days') ? 1 : 0;
-  const max = k.includes('days') ? 7 : 20;
-  SD[k] = Math.max(min, Math.min(max, (SD[k]||0)+d));
+  SD[k] = Math.max(0, Math.min(20, (SD[k]||0)+d));
   const el = document.getElementById('val-'+k);
   if (el) el.textContent = SD[k];
 }
 
-// ============================================================
-// CHIPS
-// ============================================================
-const CS = {diet:['omnivore'],allergy:[],time:['30'],level:['intermediate'],pantry:['rice','pasta','oil','spices'],fridge:['eggs'],'stock-cat':['pantry'],'magic-obj':['balanced']};
-
+const CS = {diet:['omnivore'],allergy:[],time:['30'],level:['intermediate'],pantry:['rice','pasta','oil','spices'],fridge:['eggs'],'stock-cat':['pantry']};
 function toggleChip(el, g) {
   const v = el.dataset.val;
   const single = ['diet','time','level','stock-cat'];
   if (single.includes(g)) {
-    document.querySelectorAll('#chips-'+g+' .chip, #magic-objectives .chip').forEach(c=>c.classList.remove('selected'));
+    document.querySelectorAll('#chips-'+g+' .chip').forEach(c=>c.classList.remove('selected'));
     CS[g] = [v];
   } else {
     if (!CS[g]) CS[g]=[];
@@ -934,31 +875,7 @@ function toggleChip(el, g) {
 }
 
 // ============================================================
-// SETUP STOCK
-// ============================================================
-const customStockItems = [];
-
-function addSetupStock() {
-  const inp = document.getElementById('setup-stock-input');
-  const v = inp.value.trim();
-  if (!v) return;
-  customStockItems.push(v);
-  inp.value = '';
-  renderSetupStockList();
-}
-
-function renderSetupStockList() {
-  const c = document.getElementById('setup-stock-list');
-  if (!c) return;
-  c.innerHTML = customStockItems.map((item,i)=>
-    `<div class="chip selected">${item} <span onclick="removeSetupStock(${i})" style="cursor:pointer;margin-left:4px;opacity:.6">×</span></div>`
-  ).join('');
-}
-
-function removeSetupStock(i) { customStockItems.splice(i,1); renderSetupStockList(); }
-
-// ============================================================
-// FINISH SETUP
+// SETUP
 // ============================================================
 function finishSetup() {
   state.profile.adults = SD.adults;
@@ -971,60 +888,20 @@ function finishSetup() {
   state.profile.cookTime = parseInt(CS.time[0])||30;
   state.profile.level = CS.level[0]||'intermediate';
   state.profile.outside = SD.outside;
-  state.profile.favorites = document.getElementById('setup-fav').value;
-  state.profile.pantry = [...CS.pantry];
-  state.profile.fridge = [...CS.fridge];
-  state.profile.customStock = [...customStockItems];
-  state.setupDone = true;
   buildDefaultStock();
-  generatePlanForDays(Math.min(7, Math.ceil(state.profile.meals/2)), state.profile.budget, state.profile.adults+state.profile.children);
+  initPlan();
   goTo('screen-home');
-  showToast('🎉 Profil créé ! Votre plan est prêt.');
+  showToast('🎉 Profil créé !');
 }
 
 function buildDefaultStock() {
   state.stock = [];
-  state.profile.pantry.forEach(k => {
-    const m = STOCK_META[k];
-    if (m) state.stock.push({id:k, name:m.name, icon:m.icon, qty:'En stock', cat:m.cat, added:today()});
-  });
-  state.profile.fridge.forEach(k => {
-    const m = STOCK_META[k];
-    if (m) state.stock.push({id:k, name:m.name, icon:m.icon, qty:'En stock', cat:m.cat, added:today()});
-  });
-  state.profile.customStock.forEach(name => {
-    state.stock.push({id:'c_'+name, name, icon:'📦', qty:'En stock', cat:'Placard', added:today()});
-  });
+  CS.pantry.forEach(k => { const m=STOCK_META[k]; if(m) state.stock.push({id:k,name:m.name,icon:m.icon,qty:'En stock',cat:m.cat}); });
+  CS.fridge.forEach(k => { const m=STOCK_META[k]; if(m) state.stock.push({id:k,name:m.name,icon:m.icon,qty:'En stock',cat:m.cat}); });
 }
 
-function today() { return new Date().toLocaleDateString('fr-FR'); }
-
-// ============================================================
-// PLAN — Géré manuellement par l'utilisateur
-// ============================================================
-function generatePlanForDays(days, budget, persons) {
-  // Crée des jours vides que l'utilisateur remplira
-  const plan = [];
-  for (let d=0; d<days; d++) {
-    plan.push({day:DAYS[d], dayShort:DAY_SHORT[d],
-      lunch:{name:'', time:'', ingredients:[]},
-      dinner:{name:'', time:'', ingredients:[]}
-    });
-  }
-  state.plan = plan;
-  state.shoppingList = [];
-  state.checkedItems = new Set();
-}
-
-function estimateBudget() {
-  return state.profile.budget;
-}
-
-function getCat(ing) {
-  for (const [cat, data] of Object.entries(SHOPPING_CATS)) {
-    if (data.items.some(item=>ing.toLowerCase().includes(item)||item.includes(ing.toLowerCase()))) return cat;
-  }
-  return 'Autres';
+function initPlan() {
+  state.plan = DAYS.slice(0,5).map((day,i) => ({day, dayShort:DAY_SHORT[i], lunch:{name:'',time:''}, dinner:{name:'',time:''}}));
 }
 
 // ============================================================
@@ -1032,42 +909,33 @@ function getCat(ing) {
 // ============================================================
 function refreshHome() {
   const h = new Date().getHours();
-  const g = h<12?'Bonjour':h<18?'Bon après-midi':'Bonsoir';
-  const el = document.getElementById('home-greeting');
-  if (el) el.textContent = g+' 👋';
+  setEl('home-greeting', (h<12?'Bonjour':h<18?'Bon après-midi':'Bonsoir')+' 👋');
   const persons = state.profile.adults + state.profile.children;
   setEl('home-budget', state.profile.budget+'€');
-  setEl('home-meals', state.plan.length*2);
+  const mealCount = state.plan.filter(d=>d.lunch.name||d.dinner.name).length * 2;
+  setEl('home-meals', mealCount);
   setEl('home-persons', persons);
 
   const preview = document.getElementById('home-meal-preview');
-  if (preview) {
-    if (state.plan.length) {
-      const hasAnyMeal = state.plan.some(d=>d.dinner.name||d.lunch.name);
-      if (hasAnyMeal) {
-        preview.innerHTML = state.plan.slice(0,4).map(day=>`
-          <div class="meal-row">
-            <div class="meal-day">${day.dayShort}</div>
-            <div class="meal-info">
-              <div class="meal-name" style="${!day.dinner.name?'color:var(--ink3);font-style:italic':''}">${day.dinner.name||'Dîner à planifier'}</div>
-              <div class="meal-meta">Dîner${day.dinner.time?' · '+day.dinner.time:''}</div>
-            </div>
-            <button class="meal-action" onclick="openSwapSheet('${day.day}','dinner')">✏️</button>
-          </div>`).join('');
-      } else {
-        preview.innerHTML = `<div class="empty-state" style="padding:30px 0"><div class="empty-icon">📅</div><div class="empty-title">Aucun repas planifié</div><div class="empty-sub">Allez dans Plan pour ajouter vos repas de la semaine.</div><button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="navTo('plan')">📅 Planifier mes repas</button></div>`;
-      }
-    } else {
-      preview.innerHTML = `<div class="empty-state" style="padding:30px 0"><div class="empty-icon">📅</div><div class="empty-title">Aucun plan</div><div class="empty-sub">Appuyez sur ✨ pour créer votre semaine.</div></div>`;
-    }
-  }
-
-  const ac = document.getElementById('stock-alert-container');
-  if (ac && state.stock.length>0) {
-    const perishable = state.stock.filter(s=>['courgettes','tomates','salade','champignons'].some(p=>s.name.toLowerCase().includes(p)));
-    if (perishable.length>0) {
-      ac.innerHTML = `<div class="card" style="background:var(--accent-bg);border:1.5px solid var(--accent)"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:20px">💡</span><div><div style="font-weight:700;font-size:14px;margin-bottom:4px">Utilisez ce que vous avez</div><div style="font-size:13px;color:var(--ink2);line-height:1.5">Si vos ${perishable.map(p=>p.name).join(', ')} sont toujours bons, je les ai intégrés dans votre plan cette semaine.</div></div></div></div>`;
-    } else ac.innerHTML='';
+  if (!preview) return;
+  const hasMeals = state.plan.some(d=>d.dinner.name||d.lunch.name);
+  if (hasMeals) {
+    preview.innerHTML = state.plan.slice(0,4).map(day=>`
+      <div class="meal-row">
+        <div class="meal-day">${day.dayShort}</div>
+        <div class="meal-info">
+          <div class="meal-name" style="${!day.dinner.name?'color:var(--ink3);font-style:italic':''}">${day.dinner.name||'Dîner à planifier'}</div>
+          <div class="meal-meta">Dîner${day.dinner.time?' · '+day.dinner.time:''}</div>
+        </div>
+        <button class="meal-action" onclick="openSwapSheet('${day.day}','dinner')">✏️</button>
+      </div>`).join('');
+  } else {
+    preview.innerHTML = `<div class="empty-state" style="padding:28px 0">
+      <div class="empty-icon">📅</div>
+      <div class="empty-title">Aucun repas planifié</div>
+      <div class="empty-sub">Allez dans Plan pour ajouter vos repas, ou appuyez sur ✨ pour des suggestions.</div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="openMagicSheet()">✨ Suggestions</button>
+    </div>`;
   }
 }
 
@@ -1077,16 +945,12 @@ function refreshHome() {
 function refreshPlan() {
   const content = document.getElementById('plan-content');
   if (!content) return;
-  if (!state.plan.length) {
-    content.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Aucun plan généré</div><div class="empty-sub">Appuyez sur ✨ pour générer votre plan.</div><button class="btn btn-primary" style="margin-top:20px" onclick="openMagicSheet()">✨ Générer mon plan</button></div>`;
-    return;
-  }
-  const est = estimateBudget();
-  const pct = Math.min(100, Math.round(est/state.profile.budget*100));
-  setEl('plan-budget-display','~'+est+'€');
-  setEl('plan-budget-pct', pct+'% du budget');
-  const bar = document.getElementById('plan-budget-bar');
-  if (bar) { bar.style.width=pct+'%'; bar.style.background=pct>95?'var(--danger)':pct>80?'var(--accent)':'var(--primary)'; }
+  setEl('plan-budget-display', state.profile.budget+'€');
+  const filled = state.plan.filter(d=>d.lunch.name||d.dinner.name).length;
+  const total = state.plan.length;
+  setEl('plan-meals-count', filled+'/'+total+' jours planifiés');
+  const bar = document.getElementById('plan-progress-bar');
+  if (bar) bar.style.width = (total?Math.round(filled/total*100):0)+'%';
 
   const today2 = new Date();
   const monday = new Date(today2);
@@ -1095,47 +959,137 @@ function refreshPlan() {
   content.innerHTML = state.plan.map((day,i)=>{
     const d = new Date(monday); d.setDate(monday.getDate()+i);
     const ds = d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
-    const lunchEmpty = !day.lunch.name;
-    const dinnerEmpty = !day.dinner.name;
+    const lE = !day.lunch.name, dE = !day.dinner.name;
     return `<div class="day-section">
       <div class="day-header"><div class="day-dot"></div><div class="day-name">${day.day}</div><div class="day-date">${ds}</div></div>
       <div class="meal-card" onclick="openSwapSheet('${day.day}','lunch')">
         <div class="meal-type-badge">Déjeuner</div>
-        <div class="meal-card-name" style="${lunchEmpty?'color:var(--ink3);font-style:italic':''}">${lunchEmpty?'Appuyez pour ajouter…':day.lunch.name}</div>
+        <div class="meal-card-name" style="${lE?'color:var(--ink3);font-style:italic':''}">${lE?'Appuyez pour ajouter…':day.lunch.name}</div>
         <div class="meal-card-time">${day.lunch.time||''}</div>
-        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','lunch')">${lunchEmpty?'+':'✏️'}</button>
+        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','lunch')">${lE?'+':'✏️'}</button>
       </div>
       <div class="meal-card" onclick="openSwapSheet('${day.day}','dinner')">
         <div class="meal-type-badge dinner">Dîner</div>
-        <div class="meal-card-name" style="${dinnerEmpty?'color:var(--ink3);font-style:italic':''}">${dinnerEmpty?'Appuyez pour ajouter…':day.dinner.name}</div>
+        <div class="meal-card-name" style="${dE?'color:var(--ink3);font-style:italic':''}">${dE?'Appuyez pour ajouter…':day.dinner.name}</div>
         <div class="meal-card-time">${day.dinner.time||''}</div>
-        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','dinner')">${dinnerEmpty?'+':'✏️'}</button>
+        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','dinner')">${dE?'+':'✏️'}</button>
       </div>
     </div>`;
-  }).join('') + `<div style="padding:20px"><button class="btn btn-primary btn-full" onclick="navTo('list')">🛒 Voir ma liste de courses</button></div>`;
+  }).join('') + `<div style="padding:16px 20px">
+    <button class="btn btn-primary btn-full" onclick="navTo('list')">🛒 Aller à ma liste de courses</button>
+  </div>`;
 }
 
 // ============================================================
-// LIST
+// MEAL EDIT SHEET
+// ============================================================
+function openSwapSheet(day, type) {
+  const dayObj = state.plan.find(d=>d.day===day);
+  const cur = dayObj ? dayObj[type] : null;
+  setEl('swap-title', (type==='lunch'?'Déjeuner':'Dîner')+' de '+day);
+  const opts = document.getElementById('swap-options');
+  if (opts) {
+    opts.innerHTML = `
+      <div class="form-group"><label class="form-label">Nom du repas</label>
+        <input type="text" class="form-input" id="swap-meal-name" placeholder="Ex : Pâtes bolognaise" value="${cur?.name||''}">
+      </div>
+      <div class="form-group"><label class="form-label">Temps de préparation</label>
+        <input type="text" class="form-input" id="swap-meal-time" placeholder="Ex : 30 min" value="${cur?.time||''}">
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Suggestions rapides</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${RECIPES.filter(r=>(type==='lunch'?r.cat==='Déjeuner':r.cat==='Dîner')).slice(0,6).map(r=>
+            `<div class="chip" onclick="selectRecipe('${r.name}','${r.time}')" style="font-size:12px">${r.emoji} ${r.name}</div>`
+          ).join('')}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-danger" style="flex:1" onclick="clearMeal('${day}','${type}')">🗑️ Supprimer</button>
+        <button class="btn btn-primary" style="flex:1" onclick="saveMeal('${day}','${type}')">✅ Enregistrer</button>
+      </div>`;
+  }
+  openSheet('sheet-swap');
+}
+
+function selectRecipe(name, time) {
+  const n = document.getElementById('swap-meal-name');
+  const t = document.getElementById('swap-meal-time');
+  if (n) n.value = name;
+  if (t) t.value = time;
+}
+
+function saveMeal(day, type) {
+  const name = document.getElementById('swap-meal-name').value.trim();
+  const time = document.getElementById('swap-meal-time').value.trim();
+  const dayObj = state.plan.find(d=>d.day===day);
+  if (!dayObj) return;
+  dayObj[type] = {name, time};
+  closeAllSheets();
+  refreshPlan();
+  refreshHome();
+  showToast('✅ Repas enregistré !');
+}
+
+function clearMeal(day, type) {
+  const dayObj = state.plan.find(d=>d.day===day);
+  if (dayObj) dayObj[type] = {name:'', time:''};
+  closeAllSheets();
+  refreshPlan();
+  refreshHome();
+  showToast('Repas supprimé');
+}
+
+// ============================================================
+// MAGIC SHEET — Suggestions
+// ============================================================
+function openMagicSheet() {
+  const list = document.getElementById('recipe-suggestions-list');
+  if (list) {
+    // Shuffle and show 8 recipes
+    const shuffled = [...RECIPES].sort(()=>Math.random()-.5).slice(0,8);
+    list.innerHTML = shuffled.map(r=>`
+      <div class="recipe-card">
+        <div class="recipe-emoji">${r.emoji}</div>
+        <div class="recipe-info">
+          <div class="recipe-name">${r.name}</div>
+          <div class="recipe-meta">${r.cat} · ${r.time}</div>
+        </div>
+        <button class="recipe-add" onclick="addRecipeToPlan('${r.name}','${r.time}','${r.cat}')">+</button>
+      </div>`).join('');
+  }
+  openSheet('sheet-magic');
+}
+
+function addRecipeToPlan(name, time, cat) {
+  const day = document.getElementById('recipe-target-day').value;
+  const type = document.getElementById('recipe-target-type').value;
+  const dayObj = state.plan.find(d=>d.day===day);
+  if (!dayObj) {
+    state.plan.push({day, dayShort:day.slice(0,3), lunch:{name:'',time:''}, dinner:{name:'',time:''}});
+  }
+  const target = state.plan.find(d=>d.day===day);
+  if (target) target[type] = {name, time};
+  refreshPlan();
+  refreshHome();
+  showToast('✅ '+name+' ajouté le '+day);
+}
+
+// ============================================================
+// SHOPPING LIST
 // ============================================================
 function refreshList() {
   const content = document.getElementById('list-content');
   if (!content) return;
   const unchecked = state.shoppingList.filter(i=>!state.checkedItems.has(i.name)).length;
-  setEl('list-subtitle', unchecked+' article'+(unchecked!==1?'s':'')+' restant'+(unchecked!==1?'s':''));
-
-  // Add item form at top
-  let html = `<div style="padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--bg2)">
-    <div style="display:flex;gap:8px">
-      <input type="text" class="form-input" id="new-item-name" placeholder="Ajouter un article…" style="flex:1;padding:12px 14px" onkeydown="if(event.key==='Enter')addListItem()">
-      <input type="text" class="form-input" id="new-item-qty" placeholder="Qté" style="width:80px;padding:12px 10px" onkeydown="if(event.key==='Enter')addListItem()">
-      <button class="btn btn-primary btn-sm" onclick="addListItem()" style="padding:12px 16px;border-radius:var(--radius-sm)">+</button>
-    </div>
-  </div>`;
+  setEl('list-subtitle', state.shoppingList.length+' article'+(state.shoppingList.length!==1?'s':''));
 
   if (!state.shoppingList.length) {
-    html += `<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-title">Liste vide</div><div class="empty-sub">Ajoutez vos articles en utilisant le champ ci-dessus.</div></div>`;
-    content.innerHTML = html;
+    content.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🛒</div>
+      <div class="empty-title">Liste vide</div>
+      <div class="empty-sub">Utilisez le champ ci-dessus pour ajouter vos articles.</div>
+    </div>`;
     return;
   }
 
@@ -1145,55 +1099,55 @@ function refreshList() {
     grouped[item.category].push(item);
   });
 
+  let html = '';
+  // Unchecked first
   Object.entries(grouped).forEach(([cat,items])=>{
     const unc = items.filter(i=>!state.checkedItems.has(i.name));
     if (!unc.length) return;
     const cd = SHOPPING_CATS[cat]||{icon:'📦'};
-    html += `<div class="list-category"><div class="list-cat-header"><span class="list-cat-icon">${cd.icon}</span><span class="list-cat-name">${cat}</span><span class="list-cat-count">${unc.length}</span></div>${unc.map(renderListItem).join('')}</div>`;
+    html += `<div class="list-category">
+      <div class="list-cat-header"><span class="list-cat-icon">${cd.icon}</span><span class="list-cat-name">${cat}</span><span class="list-cat-count">${unc.length}</span></div>
+      ${unc.map(renderListItem).join('')}
+    </div>`;
   });
-
-  const checked = state.shoppingList.filter(i=>state.checkedItems.has(i.name));
-  if (checked.length) {
-    html += `<div class="list-category"><div class="list-cat-header"><span class="list-cat-icon">✅</span><span class="list-cat-name">Achetés</span><span class="list-cat-count">${checked.length}</span></div>${checked.map(renderListItem).join('')}</div>`;
+  // Checked
+  const chk = state.shoppingList.filter(i=>state.checkedItems.has(i.name));
+  if (chk.length) {
+    html += `<div class="list-category">
+      <div class="list-cat-header"><span class="list-cat-icon">✅</span><span class="list-cat-name">Achetés</span><span class="list-cat-count">${chk.length}</span></div>
+      ${chk.map(renderListItem).join('')}
+    </div>`;
   }
   content.innerHTML = html;
+}
+
+function renderListItem(item) {
+  const chk = state.checkedItems.has(item.name);
+  const safe = item.name.replace(/'/g,"\'");
+  return `<div class="list-item${chk?' checked':''}">
+    <div class="list-check" onclick="toggleItem('${safe}')">${chk?'✓':''}</div>
+    <div class="list-item-info">
+      <div class="list-item-name">${item.name}</div>
+      ${item.qty?`<div class="list-item-qty">${item.qty}</div>`:''}
+    </div>
+    <button class="list-del" onclick="removeListItem('${safe}')">×</button>
+  </div>`;
 }
 
 function addListItem() {
   const nameEl = document.getElementById('new-item-name');
   const qtyEl = document.getElementById('new-item-qty');
-  const name = nameEl ? nameEl.value.trim() : '';
-  const qty = qtyEl ? qtyEl.value.trim() : '';
+  const name = nameEl?.value.trim();
+  const qty = qtyEl?.value.trim();
   if (!name) return;
-  // Check if already exists
   if (state.shoppingList.find(i=>i.name.toLowerCase()===name.toLowerCase())) {
-    showToast('Cet article est déjà dans la liste');
-    return;
+    showToast('Déjà dans la liste'); return;
   }
-  state.shoppingList.push({name, qty: qty||'', recipes:[], category: getCat(name)});
+  state.shoppingList.push({name, qty:qty||'', category:getCat(name)});
   if (nameEl) nameEl.value='';
   if (qtyEl) qtyEl.value='';
   refreshList();
   showToast('✅ '+name+' ajouté');
-}
-
-function renderListItem(item) {
-  const chk = state.checkedItems.has(item.name);
-  const safeName = item.name.replace(/'/g,"\'");
-  return `<div class="list-item${chk?' checked':''}">
-    <div class="list-check" onclick="toggleItem('${safeName}')">${chk?'✓':''}</div>
-    <div class="list-item-info">
-      <div class="list-item-name">${item.name}</div>
-      ${item.qty?`<div class="list-item-qty">${item.qty}</div>`:''}
-    </div>
-    <button onclick="removeListItem('${safeName}')" style="width:28px;height:28px;border-radius:50%;background:var(--danger-bg);border:none;cursor:pointer;color:var(--danger);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
-  </div>`;
-}
-
-function removeListItem(name) {
-  state.shoppingList = state.shoppingList.filter(i=>i.name!==name);
-  state.checkedItems.delete(name);
-  refreshList();
 }
 
 function toggleItem(name) {
@@ -1202,8 +1156,25 @@ function toggleItem(name) {
   refreshList();
 }
 
+function removeListItem(name) {
+  state.shoppingList = state.shoppingList.filter(i=>i.name!==name);
+  state.checkedItems.delete(name);
+  refreshList();
+}
+
+function getCat(ing) {
+  const t = ing.toLowerCase();
+  for (const [cat, data] of Object.entries(SHOPPING_CATS)) {
+    if (data.keywords && data.keywords.some(k=>t.includes(k)||k.includes(t))) return cat;
+  }
+  return 'Autres';
+}
+
 function shareList() {
-  const text = '🛒 Ma liste de courses Panier\n\n' + state.shoppingList.map(i=>`☐ ${i.name} — ${i.qty}`).join('\n');
+  const text = '🛒 Ma liste de courses Panier
+
+'+state.shoppingList.map(i=>`☐ ${i.name}${i.qty?' — '+i.qty:''}`).join('
+');
   if (navigator.share) navigator.share({title:'Ma liste Panier',text});
   else navigator.clipboard.writeText(text).then(()=>showToast('📋 Liste copiée !'));
 }
@@ -1216,7 +1187,7 @@ function refreshStock() {
   if (!content) return;
   setEl('stock-subtitle', state.stock.length+' produit'+(state.stock.length!==1?'s':''));
   if (!state.stock.length) {
-    content.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-title">Stock vide</div><div class="empty-sub">Ajoutez vos produits pour que l'application en tienne compte.</div><button class="btn btn-primary" style="margin-top:20px" onclick="openAddStockSheet()">+ Ajouter un produit</button></div>`;
+    content.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-title">Stock vide</div><div class="empty-sub">Ajoutez vos produits.</div><button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="openAddStockSheet()">+ Ajouter</button></div>`;
     return;
   }
   const grouped = {};
@@ -1231,132 +1202,138 @@ function refreshStock() {
       <div class="card" style="padding:0 16px">
         ${items.map(item=>`<div class="stock-item">
           <div class="stock-icon">${item.icon}</div>
-          <div class="stock-info"><div class="stock-name">${item.name}</div><div class="stock-qty">${item.qty}</div><div class="stock-cat">${item.cat}</div></div>
+          <div class="stock-info"><div class="stock-name">${item.name}</div><div class="stock-qty">${item.qty}</div></div>
           <button class="stock-del" onclick="removeStock('${item.id}')">🗑️</button>
         </div>`).join('')}
       </div>
-    </div>`).join('')+'<div style="height:20px"></div>';
+    </div>`).join('')+'<div style="height:16px"></div>';
 }
 
-function removeStock(id) {
-  state.stock = state.stock.filter(s=>s.id!==id);
-  refreshStock();
-  showToast('Produit retiré du stock');
-}
-
+function removeStock(id) { state.stock=state.stock.filter(s=>s.id!==id); refreshStock(); showToast('Retiré du stock'); }
 function openAddStockSheet() { openSheet('sheet-add-stock'); }
-
 function saveStockItem() {
   const name = document.getElementById('stock-name-input').value.trim();
   const qty = document.getElementById('stock-qty-input').value.trim()||'En stock';
   const catMap = {pantry:'Placard',fridge:'Frigo',freezer:'Congélateur',veggies:'Légumes'};
   const cat = catMap[CS['stock-cat'][0]]||'Placard';
   if (!name) return;
-  state.stock.push({id:'u_'+Date.now(), name, icon:'📦', qty, cat, added:today()});
+  state.stock.push({id:'u_'+Date.now(), name, icon:'📦', qty, cat});
   document.getElementById('stock-name-input').value='';
   document.getElementById('stock-qty-input').value='';
   closeAllSheets();
   refreshStock();
-  showToast('✅ '+name+' ajouté au stock');
+  showToast('✅ '+name+' ajouté');
 }
 
 // ============================================================
-// ÉDITION DE REPAS — Saisie manuelle
+// SANTÉ — IMC & HARRIS-BENEDICT
 // ============================================================
-function openSwapSheet(day, type) {
-  state.currentSwap = {day, type};
-  const dayObj = state.plan.find(d=>d.day===day);
-  const current = dayObj ? dayObj[type] : null;
-  const title = document.getElementById('swap-title');
-  if (title) title.textContent = `${type==='lunch'?'Déjeuner':'Dîner'} de ${day}`;
-  const opts = document.getElementById('swap-options');
-  if (opts) {
-    opts.innerHTML = `
-      <div class="form-group">
-        <label class="form-label">Nom du repas</label>
-        <input type="text" class="form-input" id="swap-meal-name" placeholder="Ex : Pâtes bolognaise" value="${current?.name||''}">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Temps de préparation</label>
-        <input type="text" class="form-input" id="swap-meal-time" placeholder="Ex : 30 min" value="${current?.time||''}">
-      </div>
-      <div style="display:flex;gap:10px;margin-top:8px">
-        <button class="btn btn-secondary" style="flex:1" onclick="clearMeal('${day}','${type}')">🚫 Supprimer</button>
-        <button class="btn btn-primary" style="flex:1" onclick="saveMeal('${day}','${type}')">✅ Enregistrer</button>
-      </div>`;
+function calcHealth() {
+  const sex = document.getElementById('health-sex')?.value || 'male';
+  const age = parseFloat(document.getElementById('health-age')?.value) || 30;
+  const height = parseFloat(document.getElementById('health-height')?.value) || 170;
+  const weight = parseFloat(document.getElementById('health-weight')?.value) || 70;
+  const activity = parseFloat(document.getElementById('health-activity')?.value) || 1.55;
+
+  // IMC = poids (kg) / taille² (m)
+  const heightM = height / 100;
+  const imc = weight / (heightM * heightM);
+  setEl('imc-val', imc.toFixed(1));
+
+  // Catégorie IMC
+  let imcLabel, imcSub, imcColor;
+  if (imc < 18.5) {
+    imcLabel='Sous-poids'; imcSub='Votre poids est inférieur à la normale.'; imcColor='var(--info)';
+  } else if (imc < 25) {
+    imcLabel='Poids normal ✓'; imcSub='Votre poids est dans la plage recommandée.'; imcColor='var(--primary)';
+  } else if (imc < 30) {
+    imcLabel='Surpoids'; imcSub='Un léger excès de poids est détecté.'; imcColor='var(--accent)';
+  } else if (imc < 35) {
+    imcLabel='Obésité modérée'; imcSub='Consultez un professionnel de santé.'; imcColor='var(--danger)';
+  } else {
+    imcLabel='Obésité sévère'; imcSub='Consultez un professionnel de santé.'; imcColor='var(--danger)';
   }
-  openSheet('sheet-swap');
-}
+  setEl('imc-label', imcLabel);
+  setEl('imc-sub', imcSub);
+  const imcValEl = document.getElementById('imc-val');
+  if (imcValEl) imcValEl.style.color = imcColor;
 
-function saveMeal(day, type) {
-  const name = document.getElementById('swap-meal-name').value.trim();
-  const time = document.getElementById('swap-meal-time').value.trim();
-  const dayObj = state.plan.find(d=>d.day===day);
-  if (!dayObj) return;
-  dayObj[type] = {name, time, ingredients:[]};
-  closeAllSheets();
-  refreshPlan();
-  refreshHome();
-  showToast('✅ Repas enregistré !');
-}
-
-function clearMeal(day, type) {
-  const dayObj = state.plan.find(d=>d.day===day);
-  if (dayObj) dayObj[type] = {name:'', time:'', ingredients:[]};
-  closeAllSheets();
-  refreshPlan();
-  refreshHome();
-  showToast('Repas supprimé');
-}
-
-// ============================================================
-// MAGIC / QUICK GENERATE
-// ============================================================
-function openMagicSheet() { openSheet('sheet-magic'); }
-
-function quickGenerate() {
-  const budget = parseInt(document.getElementById('magic-budget').value)||80;
-  const persons = SD['magic-persons']||2;
-  const days = SD['magic-days']||5;
-  state.profile.budget = budget;
-  state.profile.adults = persons;
-  closeAllSheets();
-  // Crée les jours vides si pas encore de plan
-  if (!state.plan.length) {
-    generatePlanForDays(days, budget, persons);
-  } else if (state.plan.length < days) {
-    // Ajouter les jours manquants
-    for (let d=state.plan.length; d<days; d++) {
-      state.plan.push({day:DAYS[d], dayShort:DAY_SHORT[d],
-        lunch:{name:'', time:'', ingredients:[]},
-        dinner:{name:'', time:'', ingredients:[]}
-      });
-    }
+  // Curseur IMC sur la barre (0-40 → 0-100%)
+  const cursor = document.getElementById('imc-cursor');
+  if (cursor) {
+    const pct = Math.min(100, Math.max(0, (imc / 40) * 100));
+    cursor.style.left = pct + '%';
   }
-  navTo('plan');
-  showToast('✅ Plan de '+days+' jours prêt à remplir !');
+
+  // MÉTABOLISME DE BASE — Formule révisée Harris & Benedict (1984)
+  // Homme : MB = 88.362 + (13.397 × poids kg) + (4.799 × taille cm) − (5.677 × âge)
+  // Femme : MB = 447.593 + (9.247 × poids kg) + (3.098 × taille cm) − (4.330 × âge)
+  let mb, formulaText;
+  if (sex === 'male') {
+    mb = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    formulaText = `<strong>Homme :</strong> MB = 88.362 + (13.397 × ${weight}) + (4.799 × ${height}) − (5.677 × ${age})<br>
+    = 88.362 + ${(13.397*weight).toFixed(1)} + ${(4.799*height).toFixed(1)} − ${(5.677*age).toFixed(1)}<br>
+    = <strong>${mb.toFixed(0)} kcal/jour</strong>`;
+  } else {
+    mb = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    formulaText = `<strong>Femme :</strong> MB = 447.593 + (9.247 × ${weight}) + (3.098 × ${height}) − (4.330 × ${age})<br>
+    = 447.593 + ${(9.247*weight).toFixed(1)} + ${(3.098*height).toFixed(1)} − ${(4.330*age).toFixed(1)}<br>
+    = <strong>${mb.toFixed(0)} kcal/jour</strong>`;
+  }
+  setEl('mb-val', Math.round(mb));
+  setEl('mb-sub', 'Calories brûlées au repos complet (sans aucune activité).');
+  const formulaEl = document.getElementById('mb-formula-text');
+  if (formulaEl) formulaEl.innerHTML = formulaText;
+
+  // TDEE = MB × facteur d'activité
+  const tdee = mb * activity;
+  setEl('tdee-val', Math.round(tdee));
+
+  // Macronutriments recommandés (basés sur TDEE)
+  // Protéines : 20% des calories → 1g = 4 kcal
+  // Glucides : 50% des calories → 1g = 4 kcal
+  // Lipides : 30% des calories → 1g = 9 kcal
+  const prot = Math.round((tdee * 0.20) / 4);
+  const carb = Math.round((tdee * 0.50) / 4);
+  const fat  = Math.round((tdee * 0.30) / 9);
+  setEl('macro-prot', prot+'g');
+  setEl('macro-carb', carb+'g');
+  setEl('macro-fat', fat+'g');
 }
 
-function runLoadingAnimation(callback) {
-  goTo('screen-loading');
-  const steps = [1,2,3,4,5];
-  steps.forEach((s,i)=>{
-    setTimeout(()=>{
-      const el = document.getElementById('lstep-'+s);
-      if (el) el.classList.add('done');
-    }, i*400+200);
-  });
-  setTimeout(callback, steps.length*400+600);
+// ============================================================
+// PROFIL
+// ============================================================
+function refreshProfile() {
+  const persons = state.profile.adults + state.profile.children;
+  setEl('profile-sub-text', persons+' personne'+(persons>1?'s':'')+' · '+state.profile.diet[0]);
+  setEl('stat-meals', state.plan.filter(d=>d.lunch.name||d.dinner.name).length*2);
+  setEl('stat-items', state.shoppingList.length);
+  setEl('stat-stock', state.stock.length);
+}
+
+function exportData() {
+  const data = JSON.stringify({profile:state.profile, plan:state.plan, shoppingList:state.shoppingList, stock:state.stock}, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='panier-data.json'; a.click();
+  showToast('📤 Données exportées');
 }
 
 // ============================================================
 // CHAT
 // ============================================================
 function initChat() {
-  const msgs = document.getElementById('chat-messages');
-  if (!msgs) return;
-  if (state.chatHistory.length===0) {
-    state.chatHistory = [{role:'bot', text:'Bonjour ! Je suis Panier, votre copilote courses. 🛒\n\nDites-moi ce que vous souhaitez : modifier un repas, changer votre budget, ajouter une contrainte… Je m\'occupe du reste !'}];
+  if (!state.chatHistory.length) {
+    state.chatHistory = [{role:'bot', text:'Bonjour ! Je suis votre assistant Panier. 🛒
+
+Je peux vous aider à :
+• Ajouter des articles à votre liste
+• Modifier votre budget
+• Gérer vos repas
+
+Que souhaitez-vous faire ?'}];
   }
   renderChat();
 }
@@ -1364,140 +1341,97 @@ function initChat() {
 function renderChat() {
   const msgs = document.getElementById('chat-messages');
   if (!msgs) return;
-  msgs.innerHTML = state.chatHistory.map(m=>`<div class="chat-bubble ${m.role}">${m.text.replace(/\n/g,'<br>')}</div>`).join('');
+  msgs.innerHTML = state.chatHistory.map(m=>`<div class="chat-bubble ${m.role}">${m.text.replace(/
+/g,'<br>')}</div>`).join('');
   msgs.scrollTop = msgs.scrollHeight;
 }
 
 function sendChat() {
   const inp = document.getElementById('chat-input');
-  const text = inp.value.trim();
+  const text = inp?.value.trim();
   if (!text) return;
-  inp.value = '';
+  if (inp) inp.value='';
   state.chatHistory.push({role:'user', text});
   renderChat();
-  setTimeout(()=>{ processChatMessage(text); }, 600);
+  setTimeout(()=>processChatMessage(text), 500);
 }
 
 function sendSuggestion(el) {
   const text = el.textContent;
   state.chatHistory.push({role:'user', text});
   renderChat();
-  setTimeout(()=>{ processChatMessage(text); }, 600);
+  setTimeout(()=>processChatMessage(text), 500);
 }
 
 function processChatMessage(text) {
   const t = text.toLowerCase();
-  let response = '';
-  let action = null;
+  let response='', action=null;
 
-  if (t.match(/(\d+)\s*€/) || t.includes('budget')) {
-    const match = t.match(/(\d+)/);
-    const budget = match ? parseInt(match[1]) : state.profile.budget;
+  if ((t.includes('budget') || t.match(/\d+\s*€/)) && t.match(/\d+/)) {
+    const m = t.match(/(\d+)/);
+    const budget = m ? parseInt(m[1]) : state.profile.budget;
     state.profile.budget = budget;
-    action = ()=>{ generatePlanForDays(state.plan.length||5, budget, state.profile.adults+state.profile.children); };
-    response = `✅ Budget mis à jour : ${budget}€. Je réoptimise votre plan…`;
-  } else if (t.includes('poisson') || t.includes('fish')) {
-    state.plan.forEach(day=>{
-      if (day.dinner.name.toLowerCase().includes('saumon') || day.dinner.name.toLowerCase().includes('poisson')) {
-        const alt = MEALS.dinner.find(m=>!m.name.toLowerCase().includes('saumon')&&!m.name.toLowerCase().includes('poisson')&&m.name!==day.dinner.name);
-        if (alt) day.dinner = alt;
-      }
-    });
-    const stockNames = state.stock.map(s=>s.name.toLowerCase());
-    buildShoppingList(state.plan, stockNames);
-    response = '✅ J\'ai retiré le poisson de votre plan et remplacé les repas concernés.';
-  } else if (t.includes('rapide') || t.includes('20 min') || t.includes('15 min')) {
-    state.plan.forEach(day=>{
-      const quickDinner = MEALS.dinner.find(m=>m.tags.includes('quick')&&m.name!==day.dinner.name);
-      if (quickDinner) day.dinner = quickDinner;
-    });
-    const stockNames = state.stock.map(s=>s.name.toLowerCase());
-    buildShoppingList(state.plan, stockNames);
-    response = '⚡ J\'ai remplacé les repas longs par des recettes rapides (moins de 30 min).';
-  } else if (t.includes('légume') || t.includes('sainement') || t.includes('sain')) {
-    state.plan.forEach(day=>{
-      const vegDinner = MEALS.dinner.find(m=>m.tags.includes('veggies')&&m.name!==day.dinner.name);
-      if (vegDinner) day.dinner = vegDinner;
-    });
-    const stockNames = state.stock.map(s=>s.name.toLowerCase());
-    buildShoppingList(state.plan, stockNames);
-    response = '🥦 J\'ai orienté votre plan vers plus de légumes et de repas équilibrés.';
-  } else if (t.includes('jeudi') || t.includes('lundi') || t.includes('mardi') || t.includes('mercredi') || t.includes('vendredi')) {
-    const dayMap = {lundi:'Lundi',mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi',vendredi:'Vendredi',samedi:'Samedi',dimanche:'Dimanche'};
-    const dayKey = Object.keys(dayMap).find(k=>t.includes(k));
-    if (dayKey) {
-      const dayName = dayMap[dayKey];
-      const dayObj = state.plan.find(d=>d.day===dayName);
-      if (dayObj) {
-        const alt = MEALS.dinner.find(m=>m.name!==dayObj.dinner.name);
-        if (alt) { dayObj.dinner = alt; const stockNames = state.stock.map(s=>s.name.toLowerCase()); buildShoppingList(state.plan, stockNames); }
-        response = `✅ J'ai remplacé le repas de ${dayName} par "${dayObj.dinner.name}".`;
-      } else response = `Je n'ai pas trouvé de repas pour ${dayName} dans votre plan.`;
-    }
-  } else if (t.includes('riz') || t.includes('pâtes') || t.includes('poulet')) {
-    const ingredient = t.includes('riz')?'riz':t.includes('pâtes')?'pâtes':'poulet';
-    const mealsWithIng = MEALS.dinner.filter(m=>m.ingredients.some(i=>i.toLowerCase().includes(ingredient)));
-    if (mealsWithIng.length && state.plan.length) {
-      state.plan[0].dinner = mealsWithIng[0];
-      const stockNames = state.stock.map(s=>s.name.toLowerCase());
-      buildShoppingList(state.plan, stockNames);
-      response = `✅ J'ai intégré plus de ${ingredient} dans votre plan. Lundi soir : "${state.plan[0].dinner.name}".`;
-    }
-  } else if (t.includes('semaine') && t.match(/\d+/)) {
-    const match = t.match(/(\d+)/);
-    const days = Math.min(7, parseInt(match[1]));
-    action = ()=>{ generatePlanForDays(days, state.profile.budget, state.profile.adults+state.profile.children); };
-    response = `✅ Je génère un plan sur ${days} jours…`;
+    setEl('home-budget', budget+'€');
+    response = `✅ Budget mis à jour : ${budget}€.`;
+  } else if (t.includes('ajouter') || t.includes('rajouter') || t.includes('mettre')) {
+    const m = text.match(/(?:ajouter|rajouter|mettre)\s+(?:du|de la|des|un|une|le|la|les)?\s*(.+?)(?:\s+à|\s+dans|$)/i);
+    const item = m ? m[1].trim() : null;
+    if (item) {
+      if (!state.shoppingList.find(i=>i.name.toLowerCase()===item.toLowerCase())) {
+        state.shoppingList.push({name:item, qty:'', category:getCat(item)});
+        action = ()=>refreshList();
+        response = `✅ "${item}" ajouté à votre liste de courses.`;
+      } else response = `"${item}" est déjà dans votre liste.`;
+    } else response = 'Que souhaitez-vous ajouter ? Ex : "Ajouter des tomates"';
+  } else if (t.includes('vider') || t.includes('effacer') || t.includes('supprimer tout')) {
+    state.shoppingList=[]; state.checkedItems=new Set();
+    action=()=>refreshList();
+    response='✅ Liste de courses vidée.';
+  } else if (t.includes('budget') || t.includes('combien')) {
+    response=`Votre budget actuel est de ${state.profile.budget}€. Dites "Budget à X€" pour le modifier.`;
+  } else if (t.includes('personne') || t.includes('adulte')) {
+    const p = state.profile.adults+state.profile.children;
+    response=`Votre foyer compte ${state.profile.adults} adulte(s) et ${state.profile.children} enfant(s) (${p} personne(s)).`;
+  } else if (t.includes('repas') || t.includes('plan')) {
+    const filled = state.plan.filter(d=>d.lunch.name||d.dinner.name).length;
+    response=`Vous avez ${filled} jour(s) planifié(s) sur ${state.plan.length}. Allez dans l'onglet Plan pour modifier vos repas.`;
+  } else if (t.includes('imc') || t.includes('santé') || t.includes('métabolisme') || t.includes('calorie')) {
+    response='Allez dans l'onglet Santé 💪 pour calculer votre IMC et votre métabolisme de base avec la formule de Harris & Benedict.';
+    action=()=>navTo('health');
   } else {
-    const responses = [
-      'Je comprends votre demande ! Pouvez-vous préciser : souhaitez-vous modifier un repas spécifique, changer votre budget, ou ajuster vos préférences ?',
-      'Bien sûr ! Dites-moi quel jour ou quel repas vous souhaitez modifier, et je m\'en occupe.',
-      'Je suis là pour vous aider. Vous pouvez me dire par exemple : "Remplace le repas de mercredi" ou "Budget réduit à 60€".',
-    ];
-    response = responses[Math.floor(Math.random()*responses.length)];
+    const r=['Je peux vous aider à ajouter des articles, modifier votre budget ou gérer vos repas. Essayez : "Ajouter des tomates" ou "Budget à 70€".','Dites-moi ce que vous souhaitez faire. Ex : "Ajouter du poulet", "Vider ma liste", "Budget à 80€".'];
+    response=r[Math.floor(Math.random()*r.length)];
   }
-
   state.chatHistory.push({role:'bot', text:response});
   renderChat();
-  if (action) setTimeout(()=>{ action(); refreshPlan(); refreshHome(); refreshList(); }, 800);
+  if (action) setTimeout(action, 300);
 }
 
 // ============================================================
-// SHEETS
+// SHEETS & UTILS
 // ============================================================
 function openSheet(id) {
   document.getElementById('overlay').classList.add('open');
   document.getElementById(id).classList.add('open');
 }
-
 function closeAllSheets() {
   document.getElementById('overlay').classList.remove('open');
   document.querySelectorAll('.bottom-sheet').forEach(s=>s.classList.remove('open'));
 }
-
-// ============================================================
-// TOAST
-// ============================================================
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
-
-// ============================================================
-// UTILS
-// ============================================================
-function setEl(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+function setEl(id,val) { const el=document.getElementById(id); if(el) el.textContent=val; }
 
 // ============================================================
 // INIT
 // ============================================================
 (function init() {
-  // Initialise le stock par défaut (placard/frigo)
   buildDefaultStock();
-  // Crée 5 jours vides — l'utilisateur remplira ses propres repas
-  generatePlanForDays(5, 80, 2);
+  initPlan();
+  calcHealth();
 })();
 </script>
 </body>
