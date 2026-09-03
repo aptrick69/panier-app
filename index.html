@@ -292,7 +292,7 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
       </div>
     </div>
     <div class="onboarding-cta">
-      <button class="btn btn-primary btn-full" onclick="goTo('screen-setup-1')">Commencer — c'est gratuit ✨</button>
+      <button class="btn btn-primary btn-full" onclick="goTo('screen-setup-1')">Commencer ✨</button>
       <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="skipSetup()">J'ai déjà un compte</button>
     </div>
   </div>
@@ -663,18 +663,7 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
         <span class="settings-arrow">›</span>
       </div>
     </div>
-    <div class="section-header"><div class="section-title">Abonnement</div></div>
-    <div class="settings-group">
-      <div class="card" style="margin:0">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-          <div style="font-size:28px">⭐</div>
-          <div><div style="font-weight:800;font-size:16px">Panier Premium</div><div style="font-size:13px;color:var(--ink3)">Toutes les fonctionnalités</div></div>
-          <div class="badge badge-green" style="margin-left:auto">Essai gratuit</div>
-        </div>
-        <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.5">Profitez de 14 jours gratuits, puis 9,99€/mois. Annulez à tout moment.</div>
-        <button class="btn btn-primary btn-full">Activer Premium</button>
-      </div>
-    </div>
+
     <div class="section-header"><div class="section-title">Confidentialité</div></div>
     <div class="settings-group">
       <div class="settings-item"><div class="settings-icon" style="background:#FDECEA">🔒</div><div class="settings-label">Politique de confidentialité</div><span class="settings-arrow">›</span></div>
@@ -700,13 +689,12 @@ html,body{height:100%;width:100%;font-family:var(--font);background:var(--bg);co
   </div>
   <div class="chat-area" id="chat-messages"></div>
   <div class="chat-suggestions" id="chat-suggestions">
-    <button class="chat-sug" onclick="sendSuggestion(this)">Semaine à 60€ pour 2</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Enlève le poisson</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Repas rapides &lt;20 min</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Remplace jeudi soir</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">J'ai beaucoup de riz</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Manger plus sainement</button>
-    <button class="chat-sug" onclick="sendSuggestion(this)">Budget réduit à 50€</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter des tomates</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Budget à 60€</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter un repas lundi</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Vider ma liste</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Combien de personnes ?</button>
+    <button class="chat-sug" onclick="sendSuggestion(this)">Ajouter du poulet</button>
   </div>
   <div class="chat-input-row">
     <input type="text" class="chat-input" id="chat-input" placeholder="Écrivez votre demande…" onkeydown="if(event.key==='Enter')sendChat()">
@@ -1012,74 +1000,24 @@ function buildDefaultStock() {
 function today() { return new Date().toLocaleDateString('fr-FR'); }
 
 // ============================================================
-// PLAN GENERATION ENGINE
+// PLAN — Géré manuellement par l'utilisateur
 // ============================================================
 function generatePlanForDays(days, budget, persons) {
+  // Crée des jours vides que l'utilisateur remplira
   const plan = [];
-  const usedL = new Set(), usedD = new Set();
-  const stockNames = state.stock.map(s=>s.name.toLowerCase());
-
   for (let d=0; d<days; d++) {
-    const lunch = pickMeal(MEALS.lunch, usedL, stockNames);
-    usedL.add(lunch.name);
-    const dinner = pickMeal(MEALS.dinner, usedD, stockNames);
-    usedD.add(dinner.name);
-    plan.push({day:DAYS[d], dayShort:DAY_SHORT[d], lunch, dinner});
+    plan.push({day:DAYS[d], dayShort:DAY_SHORT[d],
+      lunch:{name:'', time:'', ingredients:[]},
+      dinner:{name:'', time:'', ingredients:[]}
+    });
   }
   state.plan = plan;
-  buildShoppingList(plan, stockNames);
-}
-
-function pickMeal(pool, used, stockNames) {
-  const avail = pool.filter(m=>!used.has(m.name));
-  const src = avail.length ? avail : pool;
-  const scored = src.map(m => {
-    const overlap = m.ingredients.filter(ing=>stockNames.some(s=>ing.toLowerCase().includes(s)||s.includes(ing.toLowerCase()))).length;
-    return {meal:m, score:overlap + Math.random()*0.5};
-  });
-  scored.sort((a,b)=>b.score-a.score);
-  return scored[0].meal;
-}
-
-function buildShoppingList(plan, stockNames) {
-  const map = {};
-  plan.forEach(day => {
-    [day.lunch, day.dinner].forEach(meal => {
-      meal.ingredients.forEach(ing => {
-        const inStock = stockNames.some(s=>ing.toLowerCase().includes(s)||s.includes(ing.toLowerCase()));
-        if (inStock) return;
-        const k = ing.toLowerCase();
-        if (!map[k]) map[k] = {name:ing, count:0, recipes:[]};
-        map[k].count++;
-        if (!map[k].recipes.includes(meal.name)) map[k].recipes.push(meal.name);
-      });
-    });
-  });
-  const persons = state.profile.adults + state.profile.children || 2;
-  state.shoppingList = Object.values(map).map(item => ({
-    name: item.name,
-    qty: getQty(item.name, item.count, persons),
-    recipes: item.recipes,
-    category: getCat(item.name)
-  }));
+  state.shoppingList = [];
   state.checkedItems = new Set();
 }
 
-function getQty(ing, count, persons) {
-  const qtys = {
-    'poulet':`${count*300*persons}g`,'viande hachée':`${count*150*persons}g`,
-    'steak haché':`${persons} steak(s)`,'saumon':`${persons} filet(s)`,
-    'pâtes':`${count*80*persons}g`,'riz':`${count*70*persons}g`,
-    'tomates':`${count*2*persons}`,'carottes':`${count*2*persons}`,
-    'pommes de terre':`${count*2*persons}`,'oignon':`${count*persons}`,
-    'ail':`${count*2} gousses`,'salade':`${count} sachet(s)`,
-    'courgettes':`${count*persons}`,'champignons':`${count*150*persons}g`,
-    'lentilles':`${count*80*persons}g`,'tortillas':`${count*2*persons} tortillas`,
-    'thon en boîte':`${count} boîte(s)`,'lardons':`${count*100*persons}g`,
-    'jambon':`${count*2*persons} tranches`,'fromage':`${count*100*persons}g`,
-    'fromage râpé':`${count*80*persons}g`,'crème':`${count*100*persons}ml`,
-  };
-  return qtys[ing.toLowerCase()] || `× ${count*persons}`;
+function estimateBudget() {
+  return state.profile.budget;
 }
 
 function getCat(ing) {
@@ -1087,13 +1025,6 @@ function getCat(ing) {
     if (data.items.some(item=>ing.toLowerCase().includes(item)||item.includes(ing.toLowerCase()))) return cat;
   }
   return 'Autres';
-}
-
-function estimateBudget() {
-  let total = 0;
-  const persons = state.profile.adults + state.profile.children || 2;
-  state.plan.forEach(day => { total += (day.lunch.cost||3) + (day.dinner.cost||5); });
-  return Math.round(total * persons * 0.65);
 }
 
 // ============================================================
@@ -1112,17 +1043,22 @@ function refreshHome() {
   const preview = document.getElementById('home-meal-preview');
   if (preview) {
     if (state.plan.length) {
-      preview.innerHTML = state.plan.slice(0,4).map(day=>`
-        <div class="meal-row">
-          <div class="meal-day">${day.dayShort}</div>
-          <div class="meal-info">
-            <div class="meal-name">${day.dinner.name}</div>
-            <div class="meal-meta">Dîner · ${day.dinner.time}</div>
-          </div>
-          <button class="meal-action" onclick="openSwapSheet('${day.day}','dinner')">↻</button>
-        </div>`).join('');
+      const hasAnyMeal = state.plan.some(d=>d.dinner.name||d.lunch.name);
+      if (hasAnyMeal) {
+        preview.innerHTML = state.plan.slice(0,4).map(day=>`
+          <div class="meal-row">
+            <div class="meal-day">${day.dayShort}</div>
+            <div class="meal-info">
+              <div class="meal-name" style="${!day.dinner.name?'color:var(--ink3);font-style:italic':''}">${day.dinner.name||'Dîner à planifier'}</div>
+              <div class="meal-meta">Dîner${day.dinner.time?' · '+day.dinner.time:''}</div>
+            </div>
+            <button class="meal-action" onclick="openSwapSheet('${day.day}','dinner')">✏️</button>
+          </div>`).join('');
+      } else {
+        preview.innerHTML = `<div class="empty-state" style="padding:30px 0"><div class="empty-icon">📅</div><div class="empty-title">Aucun repas planifié</div><div class="empty-sub">Allez dans Plan pour ajouter vos repas de la semaine.</div><button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="navTo('plan')">📅 Planifier mes repas</button></div>`;
+      }
     } else {
-      preview.innerHTML = `<div class="empty-state" style="padding:30px 0"><div class="empty-icon">📅</div><div class="empty-title">Aucun plan</div><div class="empty-sub">Appuyez sur ✨ pour générer votre semaine.</div></div>`;
+      preview.innerHTML = `<div class="empty-state" style="padding:30px 0"><div class="empty-icon">📅</div><div class="empty-title">Aucun plan</div><div class="empty-sub">Appuyez sur ✨ pour créer votre semaine.</div></div>`;
     }
   }
 
@@ -1159,22 +1095,24 @@ function refreshPlan() {
   content.innerHTML = state.plan.map((day,i)=>{
     const d = new Date(monday); d.setDate(monday.getDate()+i);
     const ds = d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    const lunchEmpty = !day.lunch.name;
+    const dinnerEmpty = !day.dinner.name;
     return `<div class="day-section">
       <div class="day-header"><div class="day-dot"></div><div class="day-name">${day.day}</div><div class="day-date">${ds}</div></div>
       <div class="meal-card" onclick="openSwapSheet('${day.day}','lunch')">
         <div class="meal-type-badge">Déjeuner</div>
-        <div class="meal-card-name">${day.lunch.name}</div>
-        <div class="meal-card-time">${day.lunch.time}</div>
-        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','lunch')">↻</button>
+        <div class="meal-card-name" style="${lunchEmpty?'color:var(--ink3);font-style:italic':''}">${lunchEmpty?'Appuyez pour ajouter…':day.lunch.name}</div>
+        <div class="meal-card-time">${day.lunch.time||''}</div>
+        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','lunch')">${lunchEmpty?'+':'✏️'}</button>
       </div>
       <div class="meal-card" onclick="openSwapSheet('${day.day}','dinner')">
         <div class="meal-type-badge dinner">Dîner</div>
-        <div class="meal-card-name">${day.dinner.name}</div>
-        <div class="meal-card-time">${day.dinner.time}</div>
-        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','dinner')">↻</button>
+        <div class="meal-card-name" style="${dinnerEmpty?'color:var(--ink3);font-style:italic':''}">${dinnerEmpty?'Appuyez pour ajouter…':day.dinner.name}</div>
+        <div class="meal-card-time">${day.dinner.time||''}</div>
+        <button class="meal-card-swap" onclick="event.stopPropagation();openSwapSheet('${day.day}','dinner')">${dinnerEmpty?'+':'✏️'}</button>
       </div>
     </div>`;
-  }).join('') + `<div style="padding:20px"><button class="btn btn-primary btn-full" onclick="navTo('list')">🛒 Générer ma liste de courses</button></div>`;
+  }).join('') + `<div style="padding:20px"><button class="btn btn-primary btn-full" onclick="navTo('list')">🛒 Voir ma liste de courses</button></div>`;
 }
 
 // ============================================================
@@ -1183,12 +1121,23 @@ function refreshPlan() {
 function refreshList() {
   const content = document.getElementById('list-content');
   if (!content) return;
-  if (!state.shoppingList.length) {
-    content.innerHTML = `<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-title">Liste vide</div><div class="empty-sub">Générez d'abord votre plan de repas.</div><button class="btn btn-primary" style="margin-top:20px" onclick="navTo('plan')">📅 Voir mon plan</button></div>`;
-    return;
-  }
   const unchecked = state.shoppingList.filter(i=>!state.checkedItems.has(i.name)).length;
   setEl('list-subtitle', unchecked+' article'+(unchecked!==1?'s':'')+' restant'+(unchecked!==1?'s':''));
+
+  // Add item form at top
+  let html = `<div style="padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--bg2)">
+    <div style="display:flex;gap:8px">
+      <input type="text" class="form-input" id="new-item-name" placeholder="Ajouter un article…" style="flex:1;padding:12px 14px" onkeydown="if(event.key==='Enter')addListItem()">
+      <input type="text" class="form-input" id="new-item-qty" placeholder="Qté" style="width:80px;padding:12px 10px" onkeydown="if(event.key==='Enter')addListItem()">
+      <button class="btn btn-primary btn-sm" onclick="addListItem()" style="padding:12px 16px;border-radius:var(--radius-sm)">+</button>
+    </div>
+  </div>`;
+
+  if (!state.shoppingList.length) {
+    html += `<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-title">Liste vide</div><div class="empty-sub">Ajoutez vos articles en utilisant le champ ci-dessus.</div></div>`;
+    content.innerHTML = html;
+    return;
+  }
 
   const grouped = {};
   state.shoppingList.forEach(item => {
@@ -1196,7 +1145,6 @@ function refreshList() {
     grouped[item.category].push(item);
   });
 
-  let html = '';
   Object.entries(grouped).forEach(([cat,items])=>{
     const unc = items.filter(i=>!state.checkedItems.has(i.name));
     if (!unc.length) return;
@@ -1211,16 +1159,41 @@ function refreshList() {
   content.innerHTML = html;
 }
 
+function addListItem() {
+  const nameEl = document.getElementById('new-item-name');
+  const qtyEl = document.getElementById('new-item-qty');
+  const name = nameEl ? nameEl.value.trim() : '';
+  const qty = qtyEl ? qtyEl.value.trim() : '';
+  if (!name) return;
+  // Check if already exists
+  if (state.shoppingList.find(i=>i.name.toLowerCase()===name.toLowerCase())) {
+    showToast('Cet article est déjà dans la liste');
+    return;
+  }
+  state.shoppingList.push({name, qty: qty||'', recipes:[], category: getCat(name)});
+  if (nameEl) nameEl.value='';
+  if (qtyEl) qtyEl.value='';
+  refreshList();
+  showToast('✅ '+name+' ajouté');
+}
+
 function renderListItem(item) {
   const chk = state.checkedItems.has(item.name);
+  const safeName = item.name.replace(/'/g,"\'");
   return `<div class="list-item${chk?' checked':''}">
-    <div class="list-check" onclick="toggleItem('${item.name}')">${chk?'✓':''}</div>
+    <div class="list-check" onclick="toggleItem('${safeName}')">${chk?'✓':''}</div>
     <div class="list-item-info">
       <div class="list-item-name">${item.name}</div>
-      <div class="list-item-qty">${item.qty}</div>
-      ${item.recipes.length?`<div class="list-item-recipe">Pour : ${item.recipes.slice(0,2).join(', ')}</div>`:''}
+      ${item.qty?`<div class="list-item-qty">${item.qty}</div>`:''}
     </div>
+    <button onclick="removeListItem('${safeName}')" style="width:28px;height:28px;border-radius:50%;background:var(--danger-bg);border:none;cursor:pointer;color:var(--danger);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
   </div>`;
+}
+
+function removeListItem(name) {
+  state.shoppingList = state.shoppingList.filter(i=>i.name!==name);
+  state.checkedItems.delete(name);
+  refreshList();
 }
 
 function toggleItem(name) {
@@ -1288,49 +1261,52 @@ function saveStockItem() {
 }
 
 // ============================================================
-// SWAP SHEET
+// ÉDITION DE REPAS — Saisie manuelle
 // ============================================================
 function openSwapSheet(day, type) {
   state.currentSwap = {day, type};
-  const pool = type==='lunch' ? MEALS.lunch : MEALS.dinner;
   const dayObj = state.plan.find(d=>d.day===day);
   const current = dayObj ? dayObj[type] : null;
   const title = document.getElementById('swap-title');
-  if (title) title.textContent = `Remplacer ${type==='lunch'?'le déjeuner':'le dîner'} de ${day}`;
+  if (title) title.textContent = `${type==='lunch'?'Déjeuner':'Dîner'} de ${day}`;
   const opts = document.getElementById('swap-options');
   if (opts) {
-    const alternatives = pool.filter(m=>m.name!==current?.name).slice(0,6);
     opts.innerHTML = `
-      <div class="swap-option" onclick="swapMeal('${day}','${type}',null)" style="background:var(--danger-bg)">
-        <span style="font-size:20px">🚫</span>
-        <div class="swap-option-name" style="color:var(--danger)">Pas de repas ce jour</div>
+      <div class="form-group">
+        <label class="form-label">Nom du repas</label>
+        <input type="text" class="form-input" id="swap-meal-name" placeholder="Ex : Pâtes bolognaise" value="${current?.name||''}">
       </div>
-      ${alternatives.map(m=>`
-        <div class="swap-option" onclick="swapMeal('${day}','${type}','${m.name}')">
-          <span style="font-size:20px">🍽️</span>
-          <div class="swap-option-name">${m.name}</div>
-          <div class="swap-option-time">${m.time}</div>
-        </div>`).join('')}`;
+      <div class="form-group">
+        <label class="form-label">Temps de préparation</label>
+        <input type="text" class="form-input" id="swap-meal-time" placeholder="Ex : 30 min" value="${current?.time||''}">
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn btn-secondary" style="flex:1" onclick="clearMeal('${day}','${type}')">🚫 Supprimer</button>
+        <button class="btn btn-primary" style="flex:1" onclick="saveMeal('${day}','${type}')">✅ Enregistrer</button>
+      </div>`;
   }
   openSheet('sheet-swap');
 }
 
-function swapMeal(day, type, mealName) {
+function saveMeal(day, type) {
+  const name = document.getElementById('swap-meal-name').value.trim();
+  const time = document.getElementById('swap-meal-time').value.trim();
   const dayObj = state.plan.find(d=>d.day===day);
   if (!dayObj) return;
-  if (!mealName) {
-    state.plan = state.plan.filter(d=>d.day!==day);
-  } else {
-    const pool = type==='lunch' ? MEALS.lunch : MEALS.dinner;
-    const meal = pool.find(m=>m.name===mealName);
-    if (meal) dayObj[type] = meal;
-  }
-  const stockNames = state.stock.map(s=>s.name.toLowerCase());
-  buildShoppingList(state.plan, stockNames);
+  dayObj[type] = {name, time, ingredients:[]};
   closeAllSheets();
   refreshPlan();
   refreshHome();
-  showToast('✅ Repas remplacé !');
+  showToast('✅ Repas enregistré !');
+}
+
+function clearMeal(day, type) {
+  const dayObj = state.plan.find(d=>d.day===day);
+  if (dayObj) dayObj[type] = {name:'', time:'', ingredients:[]};
+  closeAllSheets();
+  refreshPlan();
+  refreshHome();
+  showToast('Repas supprimé');
 }
 
 // ============================================================
@@ -1343,12 +1319,22 @@ function quickGenerate() {
   const persons = SD['magic-persons']||2;
   const days = SD['magic-days']||5;
   state.profile.budget = budget;
+  state.profile.adults = persons;
   closeAllSheets();
-  runLoadingAnimation(()=>{
+  // Crée les jours vides si pas encore de plan
+  if (!state.plan.length) {
     generatePlanForDays(days, budget, persons);
-    navTo('plan');
-    showToast('✨ Plan généré pour '+days+' jours !');
-  });
+  } else if (state.plan.length < days) {
+    // Ajouter les jours manquants
+    for (let d=state.plan.length; d<days; d++) {
+      state.plan.push({day:DAYS[d], dayShort:DAY_SHORT[d],
+        lunch:{name:'', time:'', ingredients:[]},
+        dinner:{name:'', time:'', ingredients:[]}
+      });
+    }
+  }
+  navTo('plan');
+  showToast('✅ Plan de '+days+' jours prêt à remplir !');
 }
 
 function runLoadingAnimation(callback) {
@@ -1508,8 +1494,9 @@ function setEl(id, val) { const el=document.getElementById(id); if(el) el.textCo
 // INIT
 // ============================================================
 (function init() {
-  // Pre-populate with demo data for immediate experience
+  // Initialise le stock par défaut (placard/frigo)
   buildDefaultStock();
+  // Crée 5 jours vides — l'utilisateur remplira ses propres repas
   generatePlanForDays(5, 80, 2);
 })();
 </script>
